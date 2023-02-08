@@ -1,0 +1,9 @@
+{% extends 'home.html' %} {% block content %}
+
+<h2 class="font-title">ユーザー登録</h2>
+<form method="post" novalidate>
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit" class="font-title">登録</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'home.html' %} {% block content %}
+<div>
+    <a href="{% url 'sns:base' %}">戻る</a>
+</div>
+<h2 class="leftcolor-green mt-5 mb-3 text-b font-title">投稿</h2>
+
+<form method="post" class="mt-5">
+  {% csrf_token %}
+  <div class="container form-group">{{form.as_p}}</div>
+  <button type="submit">投稿</button>
+</form>
+{% endblock %}

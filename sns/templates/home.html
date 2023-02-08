@@ -1,0 +1,11 @@
+{% block content %}
+{% load static %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static style.css %}"
+</head>
+<p class="text-d"><a href="{% url 'accounts:signup' %}">ユーザー登録</a><br /></p>
+<p>アカウントをお持ちの場合</p>
+<button class="text-center">
+    <a href="{% url 'accounts:login' %}" class="font-title">ログイン</a>
+</button>
+{% endblock %}

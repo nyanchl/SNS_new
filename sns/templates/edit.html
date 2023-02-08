@@ -1,0 +1,11 @@
+{% block content %}
+<h3>Profile変更</h3>
+<form action="{% url 'sns:edit_bio' name %}" method="POST">
+    {% csrf_token %}
+    <p>profile</p>{{ form.text }}
+    <button class="btn" type="submit">保存</button>
+</form>
+<div>
+    <a href="{% url 'sns:profile' name %}">戻る</a>
+</div>
+{% endblock %}

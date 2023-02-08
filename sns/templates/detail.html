@@ -1,0 +1,122 @@
+{% load app %}
+<div class="text_detail">
+  <div class="indetail">
+    <p>{{ mytext.text }}</p>
+    {% if is_user_liked_for_post %}
+    <button type="button" class="ajax-like-for-post" id="ajax-like-for-post">
+      <i class="fas fa-heart text-danger" id="like-for-post-icon"></i>
+    </button>
+    {% else %}
+    <button type="button" class="ajax-like-for-post" id="ajax-like-for-post">
+      <i class="far fa-heart text-danger" id="like-for-post-icon"></i>
+    </button>
+    {% endif %}
+    <span id="like-for-post-count">{{ postdata }}</span>
+  </div>
+</div>
+<div>
+  <h2>コメント</h2>
+  {% for comment in mytext.comment_set.all %}
+  <div class="comment-text">
+    <a href="{% url 'profile' comment.user.name %}">{{ comment.user.username }}</a>
+    <p>{{ comment }}</p>
+    <div class="comment-like">
+      {% with comment_like_data|get_item:comment.pk as dic %}
+      {% if dic.is_user_liked_for_comment %}
+      <button type="button" class="ajax-like-for-comment" data-pk="{{ comment.pk }}" >
+        <div class="fas fa-heart text-danger" id="like-for-comment-icon-{{comment.pk}}"></div>
+      </button>
+      {% else %}
+      <button type="button" class="ajax-like-for-comment" data-pk="{{ comment.pk }}" >
+        <i class="far fa-heart text-danger" id="like-for-comment-icon-{{comment.pk}}"></i>
+      </button>
+      {% endif %}
+      <span id="like-for-comment-count-{{comment.pk}}">{{ dic.count }}</span>
+      {% endwith %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<div class="comment">
+    <form action="{% url 'sns:comment_create' mytext.pk %}" method="post">
+        {% csrf_token %}
+        {{ comment_form }}
+        <div>
+          <button type="submit">送信</button>
+        </div>
+    </form>
+</div>
+{% block extrajs %}
+<script type="text/javascript">
+  const likePostButtons = document.getElementsByClassName('ajax-like-for-post');
+  for (const button of likePostButtons) {
+    button.addEventListener('click', e => {
+      console.log("hoge")
+      const pk = button.dataset.pk
+      e.preventDefault();
+      const url = '{% url "sns:like_for_post" %}';
+      fetch(url, {
+        method: 'POST',
+        body: `text_pk={{mytext.id}}`,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+      }).then(response => {
+        return response.json();
+      }).then(response => {
+        const counter = document.getElementById(`like-for-post-count`)
+        const icon = document.getElementById(`like-for-post-icon`)
+        counter.textContent = response.postdata
+        console.log(response)
+        if (response.method == 'create') {
+          icon.classList.remove('far')
+          icon.classList.add('fas')
+          icon.id = `like-for-post-icon-${pk}`
+        } else {
+          icon.classList.remove('fas')
+          icon.classList.add('far')
+          icon.id = `like-for-post-icon-${pk}`
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+    });
+  }
+
+  const likeCommentButtons = document.getElementsByClassName('ajax-like-for-comment');
+  for (const button of likeCommentButtons) {
+    button.addEventListener('click', e => {
+      const pk = button.dataset.pk
+      e.preventDefault();
+      const url = '{% url "sns:like_for_comment" %}';
+      fetch(url, {
+        method: 'POST',
+        body: `comment_pk=${pk}`,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+      }).then(response => {
+        return response.json();
+      }).then(response => {
+        const counter = document.getElementById(`like-for-comment-count-${pk}`)
+        const icon = document.getElementById(`like-for-comment-icon-${pk}`)
+        counter.textContent = response.like_for_comment_count
+        if (response.method == 'create') {
+          icon.classList.remove('far')
+          icon.classList.add('fas')
+          icon.id = `like-for-comment-icon-${pk}`
+        } else {
+          icon.classList.remove('fas')
+          icon.classList.add('far')
+          icon.id = `like-for-comment-icon-${pk}`
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+    });
+  }
+</script>
+{% endblock %}
+<a href="{% url 'sns:base' %}">戻る</a>

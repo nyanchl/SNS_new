@@ -1,0 +1,81 @@
+<h1>Home</h1>
+<a href="{% url 'sns:post' %}"><button class="btn">POST</button>
+    {% for post in posts %}
+    <div>
+        {{ post }}
+        <span class="updated_datetime">{{ post.updated_datetime }}</span>
+    </div>
+    {% endfor %}
+</a>
+<div class="post">
+    {% for base in postdata %}
+    <div class="alert alert-success" role="alert">
+
+      <a href="{% url 'profile' base.user.name %}">{{ base.user.username }}</a>
+      {% if base.user.name == request.user.name %}
+      <div class="text">
+        <form action="{% url 'sns:delete_text' base.pk %}">{% csrf_token %}
+          <button class="btn" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
+        </form>
+        <button><a class="btn" href="{% url 'sns:edit_text' base.pk %}">編集</a></button>
+      </div>
+      {% endif %}
+
+      <a href="{% url 'sns:post_detail' base.pk %}"><p>{{ base.text }}</p></a>
+      {% if base.is_user_liked_for_post %}
+      <button type="button" class="ajax-like-for-post" data-pk="{{ base.pk }}" id="ajax-like-for-post">
+        <i class="fas fa-heart text-danger" id="like-for-post-icon-{{base.pk}}"></i>
+      </button>
+      {% else %}
+      <button type="button" class="ajax-like-for-post" data-pk="{{ base.pk }}" id="ajax-like-for-post">
+        <i class="far fa-heart text-danger" id="like-for-post-iconc"></i>
+      </button>
+      {% endif %}
+      <span id="like-for-post-count-{{base.pk}}">{{ base.like }}</span>
+    </div>
+    {% endfor %}
+<h5 class="text-center">
+    <a href="{% url 'accounts:logout' %}" class="font-title">ログアウト</a>
+</h5>
+
+<div>
+  {% block extrajs %}
+  <script type="text/javascript">
+  const likePostButtons = document.getElementsByClassName('ajax-like-for-post');
+  for (const button of likePostButtons) {
+    button.addEventListener('click', e => {
+      console.log("hoge")
+      const pk = button.dataset.pk
+      e.preventDefault();
+      const url = '{% url "sns:like_for_post" %}';
+      fetch(url, {
+        method: 'POST',
+        body: `text_pk=${pk}`,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+      }).then(response => {
+        return response.json();
+      }).then(response => {
+        const counter = document.getElementById(`like-for-post-count-${pk}`)
+        const icon = document.getElementById(`like-for-post-icon-${pk}`)
+        counter.textContent = response.postdata
+        console.log(response)
+        if (response.method == 'create') {
+          icon.classList.remove('far')
+          icon.classList.add('fas')
+          icon.id = `like-for-post-icon-${pk}`
+        } else {
+          icon.classList.remove('fas')
+          icon.classList.add('far')
+          icon.id = `like-for-post-icon-${pk}`
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+    });
+  }
+  </script>
+  {% endblock %}
+</div>

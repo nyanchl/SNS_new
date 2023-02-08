@@ -1,0 +1,41 @@
+{% block content %}
+    <div class="profile-username">
+        <h1>{{user.username}}</h1>
+        <div class="profile-name">
+            <p>@{{user.name}}</p>
+        </div>
+        <div class="profile-bio">
+            <p>{{profile.text}}</p>
+        </div>
+    </div>
+    <div>
+        {% if user.name == request.user.name %}
+                <a href="{% url 'sns:edit_bio' name %}">編集</a>
+        {% elif connected %}
+            <a href="{% url 'sns:unfollow' name %}">フォロー解除</a>
+            <p>あなたは{{user.username}}をフォローしています</p>
+        {% else %}
+            <a href="{% url 'sns:follow' name %}">フォロー</a>
+        {% endif %}
+    </div>
+{% endblock content %}
+<div>
+    {% for follow in object_list %}
+        <p>{{ follow.user.name }}</p>
+    {% endfor %}
+</div>
+<div class="mypostdetail">
+    <a href="{% url 'profile' user.name %}">{{ user.username }}</a>
+    <p>{{text}}</p>
+    {% if user.name == request.user.name %}
+    <div class="text">
+        <form action="{% url 'sns:delete_text' text.pk %}">{% csrf_token %}
+          <button class="btn" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
+        </form>
+        <button><a class="btn" href="{% url 'sns:edit_text' text.pk %}">編集</a></button>
+      </div>
+    {% endif %}
+</div>
+<div>
+    <a href="{% url 'sns:base' %}">戻る</a>
+</div>
