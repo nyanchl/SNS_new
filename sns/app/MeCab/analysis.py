@@ -3,7 +3,9 @@ import MeCab
 import pandas as pd
 import csv
 
-from app.models import MyText
+from sns.app.models import MyText
+
+# from models import MyText
 
 post_data = MyText.objects.all()
 
