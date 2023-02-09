@@ -15,8 +15,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 import pprint
 
-import re
-
     
 class BaseView(LoginRequiredMixin,ListView):
     model = MyText
