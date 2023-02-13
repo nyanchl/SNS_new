@@ -8,7 +8,7 @@ class MyText(models.Model):
 
     user = models.ForeignKey(AuthUser,on_delete=models.CASCADE)
     text = models.TextField(max_length=255,null=False,blank=False)
-    textpoint = models.TextField(max_length=255)
+    textpoint = models.TextField()
     created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now=True)
 
