@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import AuthUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 class MyText(models.Model):
@@ -8,7 +9,7 @@ class MyText(models.Model):
 
     user = models.ForeignKey(AuthUser,on_delete=models.CASCADE)
     text = models.TextField(max_length=255,null=False,blank=False)
-    # textpoint = models.TextField()
+    # textpoint = models.FloatField(validators=[MinValueValidator(-100), MaxValueValidator(100)])
     created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now=True)
 
