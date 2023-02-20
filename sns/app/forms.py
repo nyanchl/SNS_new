@@ -6,7 +6,7 @@ from django.db.models import Q
 class TextForm(forms.ModelForm):
     class Meta:
         model = MyText
-        exclude = ('user','name1','created_datetime','updated_datetime')
+        exclude = ('user','name1','created_datetime','updated_datetime','textpoint')
         widgets = {'text': forms.TextInput(attrs={'class': 'form-control'})}
 
     """https://codor.co.jp/django/about-qobject"""
