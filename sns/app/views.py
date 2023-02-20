@@ -110,7 +110,9 @@ class TextCreateView(CreateView):
         object.save()
         return super().form_valid(form)
     
-    # analytext = MyText.objects.get()
+    #=====================MeCab=====================
+
+    # analytext = MyText.objects.get(text=MyText.text)
 
     # pn_df = pd.read_csv('app/Dic/dic.txt',\
     #                     sep=':',
@@ -119,7 +121,7 @@ class TextCreateView(CreateView):
     #                 )
 
     # m = MeCab.Tagger('-d /opt/homebrew/lib/mecab/dic/ipadic')
-
+    
     # def get_diclist(text):
     #     parsed = m.parse(text)
     #     lines = parsed.split('\n')
