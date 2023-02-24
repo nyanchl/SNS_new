@@ -13,7 +13,7 @@ from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-import Analysis
+from app import Analysis
 import pprint
 
 import re
@@ -111,7 +111,7 @@ class TextCreateView(CreateView):
         object.save()
         return super().form_valid(form)
     
-    Analysis()
+    # Analysis()
     
     #=====================MeCab=====================
 
