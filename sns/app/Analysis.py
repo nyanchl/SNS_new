@@ -5,7 +5,8 @@ import MeCab
 import pandas as pd
 import time
 
-analytext = MyText.objects.filter(text=MyText.text)
+analytext = MyText.objects.filter(pk=1)
+print(analytext)
 
 pn_df = pd.read_csv('app/Dic/dic.txt',\
                     sep=':',
@@ -16,6 +17,7 @@ pn_df = pd.read_csv('app/Dic/dic.txt',\
 mecab = MeCab.Tagger('-d /opt/homebrew/lib/mecab/dic/ipadic')
 
 def get_diclist(analytext):
+    print("hoge")
     parsed = mecab.parse(analytext)
     lines = parsed.split('\n')
     lines = lines[0:-2]
