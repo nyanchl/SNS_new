@@ -5,7 +5,7 @@ import MeCab
 import pandas as pd
 import time
 
-analytext = MyText.objects.get()
+analytext = MyText.objects.filter(text=MyText.text)
 
 pn_df = pd.read_csv('app/Dic/dic.txt',\
                     sep=':',
@@ -62,5 +62,6 @@ for tw in analytext:
     pnmean = get_pnmean(dl_new)
     pnmeans_list.append(pnmean)
 print(time.time() - start_time)
+# print(pnmean)
 
 # MyText.objects.create(textpoint=pnmean)
