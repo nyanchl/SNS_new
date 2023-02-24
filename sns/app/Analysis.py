@@ -1,11 +1,11 @@
-from sns.app.models import MyText
+from app.models import MyText
 
 import re
 import MeCab
 import pandas as pd
 import time
 
-analytext = MyText.objects.get(text=MyText.text)
+analytext = MyText.objects.get()
 
 pn_df = pd.read_csv('app/Dic/dic.txt',\
                     sep=':',
@@ -16,7 +16,6 @@ pn_df = pd.read_csv('app/Dic/dic.txt',\
 mecab = MeCab.Tagger('-d /opt/homebrew/lib/mecab/dic/ipadic')
 
 def get_diclist(analytext):
-    mecab = MeCab.Tagger('-d /opt/homebrew/lib/mecab/dic/ipadic')
     parsed = mecab.parse(analytext)
     lines = parsed.split('\n')
     lines = lines[0:-2]
