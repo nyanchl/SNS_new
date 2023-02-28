@@ -5,7 +5,7 @@ import MeCab
 import pandas as pd
 import time
 
-analytext = MyText.objects.filter(pk=1)
+analytext = MyText.objects.filter(pk=4)
 print(analytext)
 
 pn_df = pd.read_csv('app/Dic/dic.txt',\
