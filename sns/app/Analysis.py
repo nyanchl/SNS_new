@@ -5,8 +5,10 @@ import MeCab
 import pandas as pd
 import time
 
-analytext = MyText.objects.filter(pk=4)
-print(analytext)
+analytext = MyText.objects.get(pk=5)
+# analytext = 'こんにちは'
+reanalytext = str(analytext)
+# print(type(reanalytext))
 
 pn_df = pd.read_csv('app/Dic/dic.txt',\
                     sep=':',
@@ -16,9 +18,8 @@ pn_df = pd.read_csv('app/Dic/dic.txt',\
 
 mecab = MeCab.Tagger('-d /opt/homebrew/lib/mecab/dic/ipadic')
 
-def get_diclist(analytext):
-    print("hoge")
-    parsed = mecab.parse(analytext)
+def get_diclist(reanalytext):
+    parsed = mecab.parse(reanalytext)
     lines = parsed.split('\n')
     lines = lines[0:-2]
     diclist = []
@@ -49,21 +50,24 @@ def get_pnmean(diclist):
     for word in diclist:
         pn = word['PN']
         if pn != 'notfound':
-            pn_list.append(pn)           
-    if len(pn_list) > 0:        
+            pn_list.append(pn)  
+    # print(len(pn_list))
+    if len(pn_list) > 0:
         pnmean = sum(pn_list)
-    else:
+    elif len(pn_list) == 0:
         pnmean = 0
+    print(sum(pn_list))
     return(pnmean)
 
 start_time = time.time()
 pnmeans_list = []
-for tw in analytext:
+for tw in reanalytext:
     dl_old = get_diclist(tw)
     dl_new = add_pnvalue(dl_old)
     pnmean = get_pnmean(dl_new)
     pnmeans_list.append(pnmean)
-print(time.time() - start_time)
+# print(pnmeans_list)
+# print(time.time() - start_time)
 # print(pnmean)
 
 # MyText.objects.create(textpoint=pnmean)
