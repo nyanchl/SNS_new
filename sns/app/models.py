@@ -9,7 +9,7 @@ class MyText(models.Model):
 
     user = models.ForeignKey(AuthUser,on_delete=models.CASCADE)
     text = models.TextField(max_length=255,null=False,blank=False)
-    # textpoint = models.FloatField(validators=[MinValueValidator(-100), MaxValueValidator(100)])
+    textpoint = models.FloatField(validators=[MinValueValidator(-100.000000), MaxValueValidator(100.000000)],blank=True, null=True)
     created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now=True)
 
