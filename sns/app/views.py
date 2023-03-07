@@ -3,6 +3,7 @@ from accounts.models import AuthUser,Profile,RelateUser
 from django.db.models import Count
 
 from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm
+from django.forms.models import model_to_dict
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views import generic
 from django.views.generic import CreateView,ListView,DetailView,TemplateView,UpdateView
@@ -104,20 +105,14 @@ class TextCreateView(CreateView):
 
     def form_valid(self, form):
         object = form.save(commit=False)
-
         object.user = self.request.user
         object.save()
-        post_query_set = object
-        tex = np.array(post_query_set)
+        tex = np.array(object)
         if tex.ndim == 0:
             tex = [str(tex)]
-        print(tex)
-        post_json = JsonResponse(json.loads(str(tex)))
-        # post_json = serializers.serialize("json", tex)
-        # print(json.dump(post_json))
+        json.dumps(tex)
+        print(json.dumps(tex))
         return super().form_valid(form)
-
-    # print(person)
     
     #===========analysis===========
     # morphologicalanalysis = Analysis()
