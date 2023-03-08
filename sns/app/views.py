@@ -14,7 +14,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect,JsonResponse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from app.Analysis import Analysis
+from app.Analysis import analysisoutput
 import pprint
 import json
 import numpy as np
@@ -111,8 +111,8 @@ class TextCreateView(CreateView):
         tex = model_to_dict(object)
         jsontext = json.dumps(tex)
         jsonloadtext = json.loads(jsontext)
-        print(jsonloadtext)
-        
+        analysisoutput(jsonloadtext)
+
         return super().form_valid(form)
     
     #===========analysis===========

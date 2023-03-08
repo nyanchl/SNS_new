@@ -1,5 +1,5 @@
+# from app.views import jsonloadtext
 from app.models import MyText
-from django.core import serializers
 
 import re
 import MeCab
@@ -20,17 +20,21 @@ word_list = list(pn_df['Word'])
 pn_list = list(pn_df['PN'])
 pn_dict = dict(zip(word_list, pn_list))
 
-class Analysis:
-    # analytext = MyText.objects.filter(text = 'pk')
-    analytext = MyText.objects.get(pk=7)
+def analysisoutput(jsonloadtext):
+    print(jsonloadtext)
+    # analytext = jsonloadtext["text"]
+    analyID = jsonloadtext["id"]
+    # print(analytext)
+    print(analyID)
+    ID = int(analyID)
+    analytext  = MyText.objects.get(id=ID)
     print(analytext)
-    reanalytext = str(analytext)
-    tex = np.array(reanalytext)
+    tex = np.array(analytext)
     if tex.ndim == 0:
         tex = [str(tex)]
 
-    def get_diclist(reanalytext):
-        parsed = mecab.parse(reanalytext)
+    def get_diclist(analytext):
+        parsed = mecab.parse(analytext)
         lines = parsed.split('\n')
         lines = lines[0:-2]
         diclist = []
@@ -64,7 +68,6 @@ class Analysis:
         elif len(pn_list) == 0:
             pnmean = 0
         # print(sum(pn_list))
-        print(pnmean)
         return(pnmean)
 
 
@@ -78,6 +81,9 @@ class Analysis:
 
     analytext.textpoint = pnmean
     analytext.save()
+    print(analytext.save())
+    print("hoge")
+    print(analytext.textpoint)
 
 
 # MyText.objects.create(pnmean)
