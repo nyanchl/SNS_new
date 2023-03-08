@@ -107,11 +107,12 @@ class TextCreateView(CreateView):
         object = form.save(commit=False)
         object.user = self.request.user
         object.save()
-        tex = np.array(object)
-        if tex.ndim == 0:
-            tex = [str(tex)]
-        json.dumps(tex)
-        print(json.dumps(tex))
+
+        tex = model_to_dict(object)
+        jsontext = json.dumps(tex)
+        jsonloadtext = json.loads(jsontext)
+        print(jsonloadtext)
+        
         return super().form_valid(form)
     
     #===========analysis===========
