@@ -22,12 +22,10 @@ pn_dict = dict(zip(word_list, pn_list))
 
 def analysisoutput(jsonloadtext):
     print(jsonloadtext)
-    # analytext = jsonloadtext["text"]
     analyID = jsonloadtext["id"]
-    # print(analytext)
-    print(analyID)
-    ID = int(analyID)
-    analytext  = MyText.objects.get(id=ID)
+    ID = int(analyID)-1
+    print(ID)
+    analytext  = MyText.objects.get(pk=ID)
     print(analytext)
     tex = np.array(analytext)
     if tex.ndim == 0:
@@ -62,12 +60,10 @@ def analysisoutput(jsonloadtext):
             pn = word['PN']
             if pn != 'notfound':
                 pn_list.append(pn)  
-        # print(len(pn_list))
         if len(pn_list) > 0:
             pnmean = sum(pn_list)
         elif len(pn_list) == 0:
             pnmean = 0
-        # print(sum(pn_list))
         return(pnmean)
 
 
@@ -82,8 +78,6 @@ def analysisoutput(jsonloadtext):
     analytext.textpoint = pnmean
     analytext.save()
     print(analytext.save())
-    print("hoge")
-    print(analytext.textpoint)
 
 
 # MyText.objects.create(pnmean)
