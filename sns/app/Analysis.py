@@ -1,5 +1,5 @@
-# from app.views import jsonloadtext
 from app.models import MyText
+import pprint
 
 import re
 import MeCab
@@ -20,13 +20,8 @@ word_list = list(pn_df['Word'])
 pn_list = list(pn_df['PN'])
 pn_dict = dict(zip(word_list, pn_list))
 
-def analysisoutput(jsonloadtext):
-    print(jsonloadtext)
-    analyID = jsonloadtext["id"]
-    ID = int(analyID)-1
-    print(ID)
-    analytext  = MyText.objects.get(pk=ID)
-    print(analytext)
+def analysisoutput(jsonloadtext,text):
+    analytext = text
     tex = np.array(analytext)
     if tex.ndim == 0:
         tex = [str(tex)]
@@ -67,17 +62,11 @@ def analysisoutput(jsonloadtext):
         return(pnmean)
 
 
-    start_time = time.time()
     pnmeans_list = []
     for tw in tex:
         dl_old = get_diclist(tw)
         dl_new = add_pnvalue(dl_old)
         pnmean = get_pnmean(dl_new)
         pnmeans_list.append(pnmean)
-
-    analytext.textpoint = pnmean
-    analytext.save()
-    print(analytext.save())
-
-
-# MyText.objects.create(pnmean)
+        
+    return pnmean

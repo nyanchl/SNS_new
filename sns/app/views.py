@@ -18,7 +18,7 @@ from app.Analysis import analysisoutput
 import pprint
 import json
 import numpy as np
-import asyncio
+# import asyncio
 
     
 class BaseView(LoginRequiredMixin,ListView):
@@ -104,16 +104,19 @@ class TextCreateView(CreateView):
         kwargs['user'] = self.request.user
         return kwargs
 
-    async def form_valid(self, form):
+    def form_valid(self, form):
         object = form.save(commit=False)
+        print(type(object))
         object.user = self.request.user
-        # await object.save()
 
+
+        requestuser = object.user
         tex = model_to_dict(object)
         jsontext = json.dumps(tex)
         jsonloadtext = json.loads(jsontext)
-        analysisoutput(jsonloadtext)
+        object.textpoint = analysisoutput(jsonloadtext,jsonloadtext["text"])
 
+        object.save()
         return super().form_valid(form)
     
     #===========analysis===========
