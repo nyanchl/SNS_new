@@ -140,6 +140,7 @@ class TextEditView(generic.UpdateView):
         edittext = form.save(commit=False)
         edittext.user = self.request.user
         edittext.target_text = text
+        
         edittext.save()
         
         return redirect('sns:edit_text', pk=text_pk)
