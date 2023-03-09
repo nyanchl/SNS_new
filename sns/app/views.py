@@ -85,6 +85,11 @@ class CommentCreateView(generic.CreateView):
         comment = form.save(commit=False)
         comment.user = self.request.user
         comment.target_text = text
+        # tex = model_to_dict(comment)
+        # jsontext = json.dumps(tex)
+        # jsonloadtext = json.loads(jsontext)
+        # comment.textpoint = analysisoutput(jsonloadtext,jsonloadtext["text"])
+
         comment.save()
         
         return redirect('sns:post_detail', pk=text_pk)
@@ -106,7 +111,6 @@ class TextCreateView(CreateView):
     def form_valid(self, form):
         object = form.save(commit=False)
         object.user = self.request.user
-        requestuser = object.user
         tex = model_to_dict(object)
         jsontext = json.dumps(tex)
         jsonloadtext = json.loads(jsontext)
@@ -190,8 +194,8 @@ def like_for_comment(request):
 def ProfileView(request,name):
     """ profile """
     user = get_object_or_404(AuthUser,pk=name)
-    profile = Profile.objects.get(user=user)
-    text = MyText.objects.get(user=user)
+    profile = Profile.objects.filter(user=user)
+    text = MyText.objects.filter(user=user)
     context = {
         'user':user,
 		'profile':profile,
