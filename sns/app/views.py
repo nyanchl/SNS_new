@@ -105,10 +105,7 @@ class TextCreateView(CreateView):
 
     def form_valid(self, form):
         object = form.save(commit=False)
-        print(type(object))
         object.user = self.request.user
-
-
         requestuser = object.user
         tex = model_to_dict(object)
         jsontext = json.dumps(tex)
@@ -140,6 +137,11 @@ class TextEditView(generic.UpdateView):
         edittext = form.save(commit=False)
         edittext.user = self.request.user
         edittext.target_text = text
+        tex = model_to_dict(edittext)
+        jsontext = json.dumps(tex)
+        jsonloadtext = json.loads(jsontext)
+        edittext.textpoint = analysisoutput(jsonloadtext,jsonloadtext["text"])
+        print(edittext)
         
         edittext.save()
         
