@@ -194,7 +194,7 @@ def like_for_comment(request):
 def ProfileView(request,name):
     """ profile """
     user = get_object_or_404(AuthUser,pk=name)
-    profile = Profile.objects.filter(user=user)
+    profile = Profile.objects.get(user=user)
     text = MyText.objects.filter(user=user)
     context = {
         'user':user,
