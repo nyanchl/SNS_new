@@ -1,5 +1,4 @@
 from app.models import MyText
-import pprint
 
 import re
 import MeCab
@@ -68,5 +67,5 @@ def analysisoutput(jsonloadtext,text):
         dl_new = add_pnvalue(dl_old)
         pnmean = get_pnmean(dl_new)
         pnmeans_list.append(pnmean)
-        
+
     return pnmean

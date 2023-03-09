@@ -18,7 +18,6 @@ from app.Analysis import analysisoutput
 import pprint
 import json
 import numpy as np
-# import asyncio
 
     
 class BaseView(LoginRequiredMixin,ListView):
