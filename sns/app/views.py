@@ -85,10 +85,10 @@ class CommentCreateView(generic.CreateView):
         comment = form.save(commit=False)
         comment.user = self.request.user
         comment.target_text = text
-        # tex = model_to_dict(comment)
-        # jsontext = json.dumps(tex)
+        # commenttex = model_to_dict(comment)
+        # jsontext = json.dumps(commenttex)
         # jsonloadtext = json.loads(jsontext)
-        # comment.textpoint = analysisoutput(jsonloadtext,jsonloadtext["text"])
+        # comment.textpoint = analysisoutput(jsonloadtext,jsonloadtext["comment"])
 
         comment.save()
         

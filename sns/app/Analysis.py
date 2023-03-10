@@ -18,8 +18,8 @@ mecab = MeCab.Tagger('-d /opt/homebrew/lib/mecab/dic/ipadic')
 word_list = list(pn_df['Word'])
 pn_list = list(pn_df['PN'])
 pn_dict = dict(zip(word_list, pn_list))
+
 def analysisoutput(jsonloadtext,text):
-    print(text)
     analytext = text
     tex = np.array(analytext)
     if tex.ndim == 0:
