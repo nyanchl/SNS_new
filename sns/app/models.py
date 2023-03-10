@@ -6,15 +6,19 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class MyText(models.Model):
     class Meta:
         db_table = 'mytext'
+        verbose_name = "text","textpoint"
 
     user = models.ForeignKey(AuthUser,on_delete=models.CASCADE)
     text = models.TextField(max_length=255,null=False,blank=False)
-    textpoint = models.FloatField(validators=[MinValueValidator(-100.000000), MaxValueValidator(100.000000)],blank=True, null=True)
+    textpoint = models.FloatField(verbose_name='textpoint',validators=[MinValueValidator(-100.000000), MaxValueValidator(100.000000)],blank=True, null=True)
     created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.text
+    
+    def __float__(self):
+        return self.textpoint
 
 class Comment(models.Model):
     class Meta:
@@ -34,6 +38,12 @@ class LikeForPost(models.Model):
 
     target = models.ForeignKey(MyText, on_delete=models.CASCADE)
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.target
+    
+    def __str__(self):
+        return self.user
     
 
 class LikeForComment(models.Model):
@@ -42,3 +52,9 @@ class LikeForComment(models.Model):
 
     target = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.target
+    
+    def __str__(self):
+        return self.user
