@@ -19,11 +19,17 @@ word_list = list(pn_df['Word'])
 pn_list = list(pn_df['PN'])
 pn_dict = dict(zip(word_list, pn_list))
 
-def analysisoutput(jsonloadtext,text):
+def analysisoutput(text):
+    # print(comment_text)
     analytext = text
+    # analycommnet = comment_text
     tex = np.array(analytext)
     if tex.ndim == 0:
         tex = [str(tex)]
+
+    # come = np.array(analycommnet)
+    # if come.ndim == 0:
+    #     come = [str(come)]
 
     def get_diclist(analytext):
         parsed = mecab.parse(analytext)
@@ -67,5 +73,11 @@ def analysisoutput(jsonloadtext,text):
         dl_new = add_pnvalue(dl_old)
         pnmean = get_pnmean(dl_new)
         pnmeans_list.append(pnmean)
+
+    # for tw in come:
+    #     dl_old = get_diclist(tw)
+    #     dl_new = add_pnvalue(dl_old)
+    #     pnmean = get_pnmean(dl_new)
+    #     pnmeans_list.append(pnmean)
 
     return pnmean
