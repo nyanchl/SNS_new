@@ -9,12 +9,13 @@ from django.views import generic
 from django.views.generic import CreateView,ListView,DetailView,TemplateView,UpdateView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect,JsonResponse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from app.Analysis import analysisoutput
+from app.AnlysisComment import analysiscomment
+
 import pprint
 import json
 import numpy as np
@@ -28,7 +29,6 @@ class BaseView(LoginRequiredMixin,ListView):
         self.request
         context = super().get_context_data(**kwargs)
         context['like_for_post'] = LikeForPost.objects.all
-        # postdata = LikeForPost.objects.filter(target=self.model).count()
         postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
         context['postdata'] = postdata
         if LikeForPost.objects.filter(user=self.request.user).exists():
@@ -85,10 +85,10 @@ class CommentCreateView(generic.CreateView):
         comment = form.save(commit=False)
         comment.user = self.request.user
         comment.target_text = text
-        # commenttex = model_to_dict(comment)
-        # jsontext = json.dumps(commenttex)
-        # jsonloadtext = json.loads(jsontext)
-        # comment.textpoint = analysisoutput(jsonloadtext,jsonloadtext["comment"])
+        commenttex = model_to_dict(comment)
+        jsontext = json.dumps(commenttex)
+        jsonloadtext = json.loads(jsontext)
+        comment.commentpoint = analysiscomment(jsonloadtext['comment_text'])
 
         comment.save()
         
@@ -114,15 +114,11 @@ class TextCreateView(CreateView):
         tex = model_to_dict(object)
         jsontext = json.dumps(tex)
         jsonloadtext = json.loads(jsontext)
-        object.textpoint = analysisoutput(jsonloadtext,jsonloadtext["text"])
+        object.textpoint = analysisoutput(jsonloadtext["text"])
 
         object.save()
         return super().form_valid(form)
     
-    #===========analysis===========
-    # morphologicalanalysis = Analysis()
-    
-
     success_url = reverse_lazy('sns:base')
 
 def TextDeleteView(request,pk):
@@ -202,7 +198,6 @@ def ProfileView(request,name):
         'name':name,
         'text':text,
 	}
-    # if name is not context['user'].name:
     result = RelateUser.objects.filter(owner=request.user.name).filter(follow_target=context['user'].name).count()
     context['connected'] = True if result else False
     context['test'] = result
