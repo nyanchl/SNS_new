@@ -76,7 +76,6 @@ class PostDetailView(generic.DetailView):
 
 #=================================positive======================================================
 querypoint = MyText.objects.values_list('textpoint',flat=True)
-# querypoint = MyText.objects.filter(point='textpoint')
 print(querypoint)
 point = list(querypoint.values_list('textpoint',flat=True))
 for item in point:
