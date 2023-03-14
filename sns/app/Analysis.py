@@ -61,7 +61,7 @@ def analysisoutput(text):
             if pn != 'notfound':
                 pn_list.append(pn)  
         if len(pn_list) > 0:
-            pnmean = sum(pn_list)
+            pnmean = (sum(pn_list)/(len(pn_list)))
         elif len(pn_list) == 0:
             pnmean = 0
         return(pnmean)

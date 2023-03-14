@@ -159,7 +159,7 @@ class TextEditView(generic.UpdateView):
         tex = model_to_dict(edittext)
         jsontext = json.dumps(tex)
         jsonloadtext = json.loads(jsontext)
-        edittext.textpoint = analysisoutput(jsonloadtext,jsonloadtext["text"])
+        edittext.textpoint = analysisoutput(jsonloadtext["text"])
         
         edittext.save()
         
