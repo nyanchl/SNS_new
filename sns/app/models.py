@@ -6,6 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class MyText(models.Model):
     class Meta:
         db_table = 'mytext'
+        verbose_name = "textpoint"
 
     user = models.ForeignKey(AuthUser,on_delete=models.CASCADE)
     text = models.TextField(max_length=255,null=False,blank=False)
@@ -26,6 +27,8 @@ class Comment(models.Model):
     commentpoint = models.FloatField(validators=[MinValueValidator(-100.000000), MaxValueValidator(100.000000)],blank=True, null=True)
     target_text = models.ForeignKey(MyText,verbose_name='対象投稿',on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.comment_text
 
 class LikeForPost(models.Model):
     class Meta:
@@ -36,9 +39,7 @@ class LikeForPost(models.Model):
 
     def __str__(self):
         return self.target
-    
-    def __str__(self):
-        return self.user
+
     
 
 class LikeForComment(models.Model):
@@ -50,6 +51,3 @@ class LikeForComment(models.Model):
 
     def __str__(self):
         return self.target
-    
-    def __str__(self):
-        return self.user
