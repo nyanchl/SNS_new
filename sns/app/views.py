@@ -84,7 +84,7 @@ class PositiveView(ListView):
             'querypoint':querypoint,
         }
         print(querypoint)
-        return render(context)
+        return context
 
 #================TEXT&COMMENT CRUD================
 
@@ -100,7 +100,7 @@ class CommentCreateView(generic.CreateView):
         comment.user = self.request.user
         comment.target_text = text
 
-        #--------mecab---------------------------------------------------------
+        #----------------------------------------MeCab---------------------------------------
         commenttex = model_to_dict(comment)                                     
         jsontext = json.dumps(commenttex)
         jsonloadtext = json.loads(jsontext)
@@ -162,7 +162,7 @@ class TextEditView(generic.UpdateView):
         
         return redirect('sns:edit_text', pk=text_pk)
 
-#====================like====================
+#===============================like==============================
 
 def like_for_post(request):
     text_pk = request.POST.get('text_pk')
