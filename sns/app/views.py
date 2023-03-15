@@ -75,9 +75,16 @@ class PostDetailView(generic.DetailView):
 
 
 #=================================positive======================================================
-querypoint = MyText.objects.filter(textpoint__gt='0.0')
-print(querypoint)
-
+class PositiveView(ListView):
+    model = MyText
+    template_name = 'base.html'
+    def positivebase():
+        querypoint = MyText.objects.filter(textpoint__gt='0.0')
+        context = {
+            'querypoint':querypoint,
+        }
+        print(querypoint)
+        return render(context)
 
 #================TEXT&COMMENT CRUD================
 
