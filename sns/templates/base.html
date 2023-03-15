@@ -12,7 +12,7 @@
     <div class="alert alert-success" role="alert">
 
       <a href="{% url 'profile' base.user.name %}">{{ base.user.username }}</a>
-      
+
       {% if base.user.name == request.user.name %}
       <div class="text">
         <form action="{% url 'sns:delete_text' base.pk %}">{% csrf_token %}
