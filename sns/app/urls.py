@@ -9,7 +9,9 @@ urlpatterns = [
     path('post/', views.TextCreateView.as_view(), name='post'),
     path('delete/<int:pk>', views.TextDeleteView, name='delete_text'),
     path('edit/<int:pk>', views.TextEditView.as_view(), name='edit_text'),
-    
+
+    path('', views.PositiveView.as_view(), name='base'),
+
     path('detail/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
     path('like_for_post/', views.like_for_post, name='like_for_post'),
     path('like_for_comment/', views.like_for_comment, name='like_for_comment'),
