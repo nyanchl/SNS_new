@@ -12,6 +12,7 @@
     <div class="alert alert-success" role="alert">
 
       <a href="{% url 'profile' base.user.name %}">{{ base.user.username }}</a>
+      
       {% if base.user.name == request.user.name %}
       <div class="text">
         <form action="{% url 'sns:delete_text' base.pk %}">{% csrf_token %}
@@ -22,6 +23,7 @@
       {% endif %}
 
       <a href="{% url 'sns:post_detail' base.pk %}"><p>{{ base.text }}</p></a>
+
       {% if base.is_user_liked_for_post %}
       <button type="button" class="ajax-like-for-post" data-pk="{{ base.pk }}" id="ajax-like-for-post">
         <i class="fas fa-heart text-danger" id="like-for-post-icon-{{base.pk}}"></i>
