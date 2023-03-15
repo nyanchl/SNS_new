@@ -75,19 +75,9 @@ class PostDetailView(generic.DetailView):
 
 
 #=================================positive======================================================
-querypoint = MyText.objects.values_list('textpoint',flat=True)
+querypoint = MyText.objects.filter(textpoint__gt='0.0')
 print(querypoint)
-point = list(querypoint.values_list('textpoint',flat=True))
-for item in point:
-    if item>=0:
-        print(item)
-        # def PositiveBaseView():
-# if point>=0:
-    # def PositiveBaseView(ListView):
-    #     model = MyText
-    #     template_name = 'base.html'
 
-    #     def get_context_data(self, **kwargs):
 
 #================TEXT&COMMENT CRUD================
 
