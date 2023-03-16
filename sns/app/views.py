@@ -210,6 +210,8 @@ def ProfileView(request,name):
         'name':name,
         'text':text,
 	}
+
+    print(text)
     result = RelateUser.objects.filter(owner=request.user.name).filter(follow_target=context['user'].name).count()
     context['connected'] = True if result else False
     context['test'] = result
