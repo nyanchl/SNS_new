@@ -6,7 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class MyText(models.Model):
     class Meta:
         db_table = 'mytext'
-        verbose_name = "textpoint"
+        # verbose_name = "textpoint"
 
     user = models.ForeignKey(AuthUser,on_delete=models.CASCADE)
     text = models.TextField(max_length=255,null=False,blank=False)
