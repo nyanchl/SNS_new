@@ -76,8 +76,7 @@ class PostDetailView(generic.DetailView):
 
 #=================================positive======================================================
 def positivebase(request):
-    print('hoge')
-    querypoint = MyText.objects.filter(textpoint__gt='0.0')
+    querypoint = MyText.objects.filter(textpoint__gte='0.0')
     context = {
         'querypoint':querypoint,
     }
@@ -211,7 +210,6 @@ def ProfileView(request,name):
         'text':text,
 	}
 
-    print(text)
     result = RelateUser.objects.filter(owner=request.user.name).filter(follow_target=context['user'].name).count()
     context['connected'] = True if result else False
     context['test'] = result
