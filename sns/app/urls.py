@@ -11,6 +11,7 @@ urlpatterns = [
     path('edit/<int:pk>', views.TextEditView.as_view(), name='edit_text'),
 
     path('posi/', views.positivebase, name='posi'),
+    path('profile/<str:name>/', views.positivebase, name='profile'),
 
     path('detail/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
     path('like_for_post/', views.like_for_post, name='like_for_post'),
