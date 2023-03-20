@@ -1,3 +1,5 @@
 <h1>ポジティブ</h1>
+{% for querypoint in querypoint %}
+<a href="{% url 'profile' user.name %}">{{ user.username }}</a>
 <p>{{querypoint}}</p>
-<p>hoge</p>
+{% endfor %}
