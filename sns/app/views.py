@@ -28,9 +28,9 @@ class BaseView(LoginRequiredMixin,ListView):
     template_name = 'base.html'
 
     def get_context_data(self, **kwargs):
-        self.request
+        # self.request
         context = super().get_context_data(**kwargs)
-        context['like_for_post'] = LikeForPost.objects.all
+        context['like_for_post'] = LikeForPost.objects.all()
         postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
         context['postdata'] = postdata
         if LikeForPost.objects.filter(user=self.request.user).exists():
