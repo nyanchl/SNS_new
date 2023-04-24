@@ -1,5 +1,5 @@
 <h1>ポジティブ</h1>
 {% for querypoint in querypoint %}
-<a href="{% url 'profile' user.name %}">{{ user.username }}</a>
+<a href="{% url 'profile' querypoint.user.name %}">{{ querypoint.user.username }}</a>
 <p>{{querypoint}}</p>
 {% endfor %}
