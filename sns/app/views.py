@@ -28,7 +28,6 @@ class BaseView(LoginRequiredMixin,ListView):
     template_name = 'base.html'
 
     def get_context_data(self, **kwargs):
-        # self.request
         context = super().get_context_data(**kwargs)
         context['like_for_post'] = LikeForPost.objects.all()
         postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
@@ -196,18 +195,19 @@ def like_for_comment(request):
 
     return JsonResponse(context)
 
-#=====================profile=====================    
-
+#=====================profile=====================
 def ProfileView(request,name):
     """ profile """
     user = get_object_or_404(AuthUser,pk=name)
     profile = Profile.objects.get(user=user)
     text = MyText.objects.filter(user=user)
+    likepost = like_for_post
     context = {
         'user':user,
 		'profile':profile,
         'name':name,
         'text':text,
+        'likepost':likepost,
 	}
 
     result = RelateUser.objects.filter(owner=request.user.name).filter(follow_target=context['user'].name).count()
@@ -217,6 +217,7 @@ def ProfileView(request,name):
     context['test3'] = request.user.name
 
     return render(request, 'profile.html', context)
+
 
 def ProfileEditView(request,name):
     user = get_object_or_404(AuthUser,pk=name)
@@ -230,6 +231,7 @@ def ProfileEditView(request,name):
         'form':form,
 	}
     return render(request, 'edit.html', context)
+
     
 #===========================follow==============================
 
