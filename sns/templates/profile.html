@@ -18,16 +18,23 @@
             <a href="{% url 'sns:follow' name %}">フォロー</a>
         {% endif %}
     </div>
+    <div>----------------------------------------------------</div>
 {% endblock content %}
-<div>
-    {% for follow in object_list %}
-        <p>{{ follow.user.name }}</p>
-    {% endfor %}
-</div>
 <div class="mypostdetail">
     {% for text in text %}
     <a href="{% url 'profile' user.name %}">{{ user.username }}</a>
     <p>{{text}}</p>
+    {% if text.is_user_liked_for_post %}
+      <button type="button" class="ajax-like-for-post" data-pk="{{ text.pk }}" id="ajax-like-for-post">
+        <i class="fas fa-heart text-danger" id="like-for-post-icon-{{text.pk}}"></i>
+      </button>
+      {% else %}
+      <button type="button" class="ajax-like-for-post" data-pk="{{ text.pk }}" id="ajax-like-for-post">
+        <i class="far fa-heart text-danger" id="like-for-post-iconc"></i>
+      </button>
+      {% endif %}
+      <span id="like-for-post-count-{{text.pk}}">{{ text }}</span>
+    </div>
     {% endfor %}
     {% comment %} {% if user.name == request.user.name %}
     <div class="text">
@@ -40,4 +47,45 @@
 </div>
 <div>
     <a href="{% url 'sns:base' %}">戻る</a>
+</div>
+<div>
+    {% block extrajs %}
+    <script type="text/javascript">
+    const likePostButtons = document.getElementsByClassName('ajax-like-for-post');
+    for (const button of likePostButtons) {
+      button.addEventListener('click', e => {
+        console.log("hoge")
+        const pk = button.dataset.pk
+        e.preventDefault();
+        const url = '{% url "sns:like_for_post" %}';
+        fetch(url, {
+          method: 'POST',
+          body: `text_pk=${pk}`,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+        }).then(response => {
+          return response.json();
+        }).then(response => {
+          const counter = document.getElementById(`like-for-post-count-${pk}`)
+          const icon = document.getElementById(`like-for-post-icon-${pk}`)
+          counter.textContent = response.postdata
+          console.log(response)
+          if (response.method == 'create') {
+            icon.classList.remove('far')
+            icon.classList.add('fas')
+            icon.id = `like-for-post-icon-${pk}`
+          } else {
+            icon.classList.remove('fas')
+            icon.classList.add('far')
+            icon.id = `like-for-post-icon-${pk}`
+          }
+        }).catch(error => {
+          console.log(error);
+        });
+      });
+    }
+    </script>
+    {% endblock %}
 </div>
