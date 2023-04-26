@@ -201,13 +201,16 @@ def ProfileView(request,name):
     user = get_object_or_404(AuthUser,pk=name)
     profile = Profile.objects.get(user=user)
     text = MyText.objects.filter(user=user)
-    likepost = like_for_post
+    likeforpost = LikeForPost.objects.all()
+    postdata = MyText.objects.filter(user=user).annotate(like=Count("likeforpost",direct=True))
+    
     context = {
         'user':user,
 		'profile':profile,
         'name':name,
         'text':text,
-        'likepost':likepost,
+        'postdata':postdata,
+        'likeforpost':likeforpost,
 	}
 
     result = RelateUser.objects.filter(owner=request.user.name).filter(follow_target=context['user'].name).count()
