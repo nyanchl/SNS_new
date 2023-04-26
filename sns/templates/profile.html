@@ -37,14 +37,6 @@
       <span id="like-for-post-count-{{text.pk}}">{{ text.like }}</span>
     </div>  
     {% endfor %}
-    {% comment %} {% if user.name == request.user.name %}
-    <div class="text">
-        <form action="{% url 'sns:delete_text' text %}">{% csrf_token %}
-          <button class="btn" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
-        </form>
-        <button><a class="btn" href="{% url 'sns:edit_text' text.pk %}">編集</a></button>
-      </div>
-    {% endif %} {% endcomment %}
 </div>
 <div>
     <a href="{% url 'sns:base' %}">戻る</a>
