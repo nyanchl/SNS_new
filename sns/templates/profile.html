@@ -21,8 +21,9 @@
     <div>----------------------------------------------------</div>
 {% endblock content %}
 <div class="mypostdetail">
-    {% for text in text %}
-    <a href="{% url 'profile' user.name %}">{{ user.username }}</a>
+    {% for text in postdata %}
+    <div class="alert alert-success" role="alert">
+    <a href="{% url 'profile' text.user.name %}">{{ text.user.username }}</a>
     <p>{{text}}</p>
     {% if text.is_user_liked_for_post %}
       <button type="button" class="ajax-like-for-post" data-pk="{{ text.pk }}" id="ajax-like-for-post">
@@ -33,8 +34,8 @@
         <i class="far fa-heart text-danger" id="like-for-post-iconc"></i>
       </button>
       {% endif %}
-      <span id="like-for-post-count-{{text.pk}}">{{ text }}</span>
-    </div>
+      <span id="like-for-post-count-{{text.pk}}">{{ text.like }}</span>
+    </div>  
     {% endfor %}
     {% comment %} {% if user.name == request.user.name %}
     <div class="text">
