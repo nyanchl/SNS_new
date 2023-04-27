@@ -203,8 +203,7 @@ def ProfileView(request,name):
     text = MyText.objects.filter(user=user)
     likeforpost = LikeForPost.objects.all()
     postdata = MyText.objects.filter(user=user).annotate(like=Count("likeforpost",direct=True))
-    mylike = LikeForPost.objects.select_related('target').get()
-    article = mylike.target
+    mylike = LikeForPost.objects.filter(user_id=user)
     
     context = {
         'user':user,
@@ -213,8 +212,8 @@ def ProfileView(request,name):
         'text':text,
         'postdata':postdata,
         'likeforpost':likeforpost,
+        'mylike':mylike,
 	}
-    print(article)
 
     result = RelateUser.objects.filter(owner=request.user.name).filter(follow_target=context['user'].name).count()
     context['connected'] = True if result else False
