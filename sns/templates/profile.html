@@ -35,9 +35,15 @@
       </button>
       {% endif %}
       <span id="like-for-post-count-{{text.pk}}">{{ text.like }}</span>
-    </div>  
+    </div>
     {% endfor %}
 </div>
+<p>--------------いいねしてる投稿---------------</p>
+{% for like in mylike %}
+<a>{{ like.user.username }}</a>
+<a href="{% url 'sns:post_detail' like.target.pk %}"><p>{{ like.target }}</p>
+{% endfor %}
+
 <div>
     <a href="{% url 'sns:base' %}">戻る</a>
 </div>
