@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .models import AuthUser
 from django.contrib.auth import get_user_model
+from .models import UserActivateTokens
+from django.http import HttpResponse
 
 User = get_user_model()
 # Create your views here.
@@ -23,3 +25,16 @@ def signup(request):
     else:
         form = RegisterForm()
     return render(request, 'signup.html',{'form':form})
+
+def activate_user(request, activate_token):
+    print("hoge")
+    activated_user = UserActivateTokens.objects.activate_user_by_token(
+        activate_token)
+    if hasattr(activated_user, 'is_active'):
+        if activated_user.is_active:
+            message = 'ユーザーのアクティベーションが完了しました'
+        if not activated_user.is_active:
+            message = 'アクティベーションが失敗しています。管理者に問い合わせてください'
+    if not hasattr(activated_user, 'is_active'):
+        message = 'エラーが発生しました'
+    return HttpResponse(message)

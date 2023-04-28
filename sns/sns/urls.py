@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
+from accounts.views import activate_user
 from app.views import ProfileView,ProfileEditView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/',include('accounts.urls')),
+    path('users/<uuid:activate_token>/activation/', activate_user, name='users-activation'),
     path('', include('app.urls')),
     path('<str:name>/', ProfileView, name='profile'),
     path('<str:name>/edit', ProfileEditView, name='edit_bio'),
