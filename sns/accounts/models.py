@@ -5,6 +5,10 @@ import uuid as uuid_lib
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
+from datetime import datetime, timedelta
+
+import uuid
 
 class AuthUserManager(BaseUserManager):
     def create_user(self, username, email, password, name ):
@@ -56,6 +60,8 @@ class AuthUser(AbstractBaseUser):
     date_joined = models.DateTimeField(auto_now_add=True)
     admin = models.BooleanField(verbose_name='管理サイトアクセス権限', default=False)
     last_login = models.DateTimeField(null=True)
+    is_active = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
@@ -134,3 +140,47 @@ def create_profile(sender, **kwargs):
     """ 新規ユーザー作成時に空のprofileも作成する """
     if kwargs['created']:
         user_profile = Profile.objects.get_or_create(user=kwargs['instance'])
+
+
+#-------------------------メール認証-------------------------------
+class UserActivateTokensManager(models.Manager):
+
+    def activate_user_by_token(self, activate_token):
+        user_activate_token = self.filter(
+            activate_token=activate_token,
+            expired_at__gte=datetime.now() # __gte = greater than equal
+        ).first()
+        if hasattr(user_activate_token, 'user'):
+            user = user_activate_token.user
+            user.is_active = True
+            user.save()
+            return user
+        
+class UserActivateTokens(models.Model):
+
+    token_id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    activate_token = models.UUIDField(default=uuid.uuid4)
+    expired_at = models.DateTimeField()
+
+    objects = UserActivateTokensManager()
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def publish_activate_token(sender, instance, **kwargs):
+    if not instance.is_active:
+        print("hoge")
+        user_activate_token = UserActivateTokens.objects.create(
+            user=instance,
+            expired_at=datetime.now()+timedelta(days=settings.ACTIVATION_EXPIRED_DAYS),
+        )
+        subject = 'Please Activate Your Account'
+        message = f'URLにアクセスしてユーザーアクティベーション。\n http://127.0.0.1:8000/users/{user_activate_token.activate_token}/activation/'
+    if instance.is_active:
+        subject = 'Activated! Your Account!'
+        message = 'ユーザーが使用できるようになりました'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    print(from_email)
+    recipient_list = [
+        instance.email,
+    ]
+    send_mail(subject, message, from_email, recipient_list)
