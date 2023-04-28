@@ -71,7 +71,10 @@ class PostDetailView(generic.DetailView):
             context[f'comment_like_data'] = d
         
         return context
-
+    
+class CommentDetailView(generic.DetailView):
+    template_name = 'commentdetail.html'
+    model = Comment
 
 #=================================positive======================================================
 def positivebase(request):
@@ -104,6 +107,18 @@ class CommentCreateView(generic.CreateView):
         comment.save()
         
         return redirect('sns:post_detail', pk=text_pk)
+    
+class CommentToCommentCreateView(generic.CreateView):
+    model = Comment
+    form = CommentCreateForm
+
+    def form_valid(self, form):
+        comment_pk = self.kwargs.get('pk')
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        comment.user = self.request.user
+        comment.target_comment = comment
+
+        return redirect('sns:post_detail', pk=comment_pk)
 
 
 

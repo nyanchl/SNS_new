@@ -25,7 +25,8 @@ class Comment(models.Model):
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
     comment_text = models.TextField('コメント')
     commentpoint = models.FloatField(validators=[MinValueValidator(-100.000000), MaxValueValidator(100.000000)],blank=True, null=True)
-    target_text = models.ForeignKey(MyText,verbose_name='対象投稿',on_delete=models.CASCADE)
+    target_text = models.ForeignKey(MyText,verbose_name='対象投稿',on_delete=models.CASCADE,blank=True, null=True)
+    target_comment = models.ForeignKey('self',verbose_name='対象コメント',on_delete=models.CASCADE,blank=True, null=True)
 
     def __str__(self):
         return self.comment_text

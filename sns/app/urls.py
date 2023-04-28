@@ -16,6 +16,7 @@ urlpatterns = [
     path('like_for_post/', views.like_for_post, name='like_for_post'),
     path('like_for_comment/', views.like_for_comment, name='like_for_comment'),
     path('comment/create/<int:pk>/', views.CommentCreateView.as_view(), name='comment_create'),
+    path('commentdetail/', views.CommentDetailView.as_view(), name='comment_detail'),
 
     path('profile/<str:name>/', views.ProfileView, name='profile'),
     path('profile/<str:name>/edit', views.ProfileEditView, name='edit_bio'),

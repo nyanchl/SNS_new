@@ -19,6 +19,7 @@
   {% for comment in mytext.comment_set.all %}
   <div class="comment-text">
     <a href="{% url 'profile' comment.user.name %}">{{ comment.user.username }}</a>
+    <a href="{% url 'comment_detail' comment.pk %}"><p>{{ comment }}</p></a>
     <p>{{ comment }}</p>
     <div class="comment-like">
       {% with comment_like_data|get_item:comment.pk as dic %}
