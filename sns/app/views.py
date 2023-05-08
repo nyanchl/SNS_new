@@ -72,9 +72,17 @@ class PostDetailView(generic.DetailView):
         
         return context
     
-class CommentDetailView(generic.DetailView):
-    template_name = 'commentdetail.html'
-    model = Comment
+def CommentToCommentView(request):
+    print("hoge")
+    # user = get_object_or_404(AuthUser,pk=user)
+    # comment = Comment.objects.get(user=user)
+
+    # context = {
+    #     'user':user,
+    #     'comment':comment,
+        
+    # }
+    return render(request, 'commentdetail.html')
 
 #=================================positive======================================================
 def positivebase(request):
@@ -110,11 +118,12 @@ class CommentCreateView(generic.CreateView):
     
 class CommentToCommentCreateView(generic.CreateView):
     model = Comment
-    form = CommentCreateForm
+    form_class = CommentCreateForm
 
     def form_valid(self, form):
         comment_pk = self.kwargs.get('pk')
         comment = get_object_or_404(Comment, pk=comment_pk)
+        comment = form.save(commit=False)
         comment.user = self.request.user
         comment.target_comment = comment
 
