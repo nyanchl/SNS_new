@@ -48,11 +48,13 @@ class PostDetailView(generic.DetailView):
     template_name = 'detail.html'
     model = MyText
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentCreateForm
         postdata = self.object.likeforpost_set.count()
         context['postdata'] = postdata
+        # comment = self.object.comment_set.all()
+        # context['comment']
         # ログイン中のユーザーがイイねしているかどうか
         if self.object.likeforpost_set.filter(user=self.request.user).exists():
             context['is_user_liked_for_post'] = True
@@ -72,17 +74,13 @@ class PostDetailView(generic.DetailView):
         
         return context
     
-def CommentToCommentView(request):
-    print("hoge")
-    # user = get_object_or_404(AuthUser,pk=user)
-    # comment = Comment.objects.get(user=user)
-
-    # context = {
-    #     'user':user,
-    #     'comment':comment,
-        
-    # }
-    return render(request, 'commentdetail.html')
+def CommentDetailView(comment):
+    comment = get_object_or_404(Comment,id=comment)
+    context = {
+        'comment':comment,
+    }
+    return render(context,"commentdetail.html")
+    
 
 #=================================positive======================================================
 def positivebase(request):
@@ -225,6 +223,7 @@ def ProfileView(request,name):
     user = get_object_or_404(AuthUser,pk=name)
     profile = Profile.objects.get(user=user)
     text = MyText.objects.filter(user=user)
+    comment = Comment.objects.filter(user=user)
     likeforpost = LikeForPost.objects.all()
     postdata = MyText.objects.filter(user=user).annotate(like=Count("likeforpost",direct=True))
     mylike = LikeForPost.objects.filter(user_id=user)
@@ -234,6 +233,7 @@ def ProfileView(request,name):
 		'profile':profile,
         'name':name,
         'text':text,
+        'comment':comment,
         'postdata':postdata,
         'likeforpost':likeforpost,
         'mylike':mylike,

@@ -19,8 +19,7 @@
   {% for comment in mytext.comment_set.all %}
   <div class="comment-text">
     <a href="{% url 'profile' comment.user.name %}">{{ comment.user.username }}</a>
-    {% comment %} <a href="{% url 'commenttocomment_detail' comment %}"></a> {% endcomment %}
-    <p>{{ comment }}</p>
+    <p><a href="{% url 'comment_detail' comment.pk %}">{{ comment }}</a><p>
     <div class="comment-like">
       {% with comment_like_data|get_item:comment.pk as dic %}
       {% if dic.is_user_liked_for_comment %}

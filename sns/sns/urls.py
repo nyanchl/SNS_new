@@ -18,7 +18,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from accounts.views import activate_user
-from app.views import ProfileView,ProfileEditView
+from app.views import ProfileView,ProfileEditView,Comment
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +26,6 @@ urlpatterns = [
     path('users/<uuid:activate_token>/activation/', activate_user, name='users-activation'),
     path('', include('app.urls')),
     path('<str:name>/', ProfileView, name='profile'),
+    path('<int:id>/', Comment, name='comment_detail'),
     path('<str:name>/edit', ProfileEditView, name='edit_bio'),
 ]
