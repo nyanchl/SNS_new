@@ -13,10 +13,13 @@ urlpatterns = [
     path('posi/', views.positivebase, name='posi'),
 
     path('detail/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('comment_detail/<int:pk>', views.CommentDetailView.as_view(), name='comment_detail'),
+
     path('like_for_post/', views.like_for_post, name='like_for_post'),
     path('like_for_comment/', views.like_for_comment, name='like_for_comment'),
+    
     path('comment/create/<int:pk>/', views.CommentCreateView.as_view(), name='comment_create'),
-    path('comment_detail/<int:pk>', views.CommentDetailView.as_view(), name='comment_detail'),
+    path('commenttocomment/create/<int:pk>/', views.CommentToCommentCreateView.as_view(), name='commenttocomment_create'),
 
     path('profile/<str:name>/', views.ProfileView, name='profile'),
     path('profile/<str:name>/edit', views.ProfileEditView, name='edit_bio'),
