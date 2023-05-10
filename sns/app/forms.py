@@ -29,6 +29,11 @@ class CommentCreateForm(forms.ModelForm):
         model = Comment
         fields = ('comment_text',)
 
+class CommentToCommentCreateForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('comment_text',)
+
 class TextEditForm(forms.ModelForm):
     class Meta:
         model = MyText
