@@ -1,1 +1,34 @@
-<h1>{{ comment }}</h1>
+<div class="comment_detail">
+    <p>{{ comment }}</p>
+    <h2>コメント</h2>
+    {% for comment in comment.comment_set.all %}
+    <div class="comment-text">
+      <a href="{% url 'profile' comment.user.name %}">{{ comment.user.username }}</a>
+      <p><a href="{% url 'comment_detail' comment.pk %}">{{ comment }}</a><p>
+      {% comment %} <div class="comment-like">
+        {% with comment_like_data|get_item:comment.pk as dic %}
+        {% if dic.is_user_liked_for_comment %}
+        <button type="button" class="ajax-like-for-comment" data-pk="{{ comment.pk }}" >
+          <div class="fas fa-heart text-danger" id="like-for-comment-icon-{{comment.pk}}"></div>
+        </button>
+        {% else %}
+        <button type="button" class="ajax-like-for-comment" data-pk="{{ comment.pk }}" >
+          <i class="far fa-heart text-danger" id="like-for-comment-icon-{{comment.pk}}"></i>
+        </button>
+        {% endif %}
+        <span id="like-for-comment-count-{{comment.pk}}">{{ dic.count }}</span>
+        {% endwith %}
+      </div> {% endcomment %}
+    </div>
+    {% endfor %}
+  </div>
+  <div class="comment">
+      <form action="{% url 'sns:commenttocomment_create' comment.pk %}" method="post">
+          {% csrf_token %}
+          {{ commenttocomment_form }}
+          <div>
+            <button type="submit">送信</button>
+          </div>
+      </form>
+  </div>
+</div>

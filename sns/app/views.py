@@ -2,7 +2,7 @@ from .models import MyText,Comment,LikeForPost,LikeForComment
 from accounts.models import AuthUser,Profile,RelateUser
 from django.db.models import Count
 
-from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm
+from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm,CommentToCommentCreateForm
 from django.forms.models import model_to_dict
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views import generic
@@ -73,15 +73,6 @@ class PostDetailView(generic.DetailView):
             context[f'comment_like_data'] = d
         
         return context
-    
-def CommentDetailView(request,name):
-    user = get_object_or_404(AuthUser, pk=name)
-    comment = Comment.objects.filter(user=user)
-    context = {
-        'user':user,
-        'comment':comment,
-    }
-    return render(context,"commentdetail.html")
 
 class CommentDetailView(generic.DetailView):
     template_name = 'commentdetail.html'
@@ -89,6 +80,7 @@ class CommentDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['commenttocomment_form'] = CommentToCommentCreateForm
         commentdata = self.object.likeforcomment_set.count()
         context['commentdata'] = commentdata
         return context
@@ -129,16 +121,17 @@ class CommentCreateView(generic.CreateView):
     
 class CommentToCommentCreateView(generic.CreateView):
     model = Comment
-    form_class = CommentCreateForm
+    form_class = CommentToCommentCreateForm
 
     def form_valid(self, form):
         comment_pk = self.kwargs.get('pk')
         comment = get_object_or_404(Comment, pk=comment_pk)
-        comment = form.save(commit=False)
-        comment.user = self.request.user
-        comment.target_comment = comment
+        commenttocomment = form.save(commit=False)
+        commenttocomment.user = self.request.user
+        commenttocomment.target_comment = comment
+        commenttocomment.save()
 
-        return redirect('sns:post_detail', pk=comment_pk)
+        return redirect('sns:comment_detail', pk=comment_pk)
 
 
 
