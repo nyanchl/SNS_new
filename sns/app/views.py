@@ -74,12 +74,25 @@ class PostDetailView(generic.DetailView):
         
         return context
     
-def CommentDetailView(comment):
-    comment = get_object_or_404(Comment,id=comment)
+def CommentDetailView(request,name):
+    user = get_object_or_404(AuthUser, pk=name)
+    comment = Comment.objects.filter(user=user)
     context = {
+        'user':user,
         'comment':comment,
     }
     return render(context,"commentdetail.html")
+
+class CommentDetailView(generic.DetailView):
+    template_name = 'commentdetail.html'
+    model = Comment
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        commentdata = self.object.likeforcomment_set.count()
+        context['commentdata'] = commentdata
+        return context
+    
     
 
 #=================================positive======================================================
