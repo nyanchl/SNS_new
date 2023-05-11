@@ -14,7 +14,7 @@ class TextForm(forms.ModelForm):
         user = kwargs.pop('user')
         super(TextForm, self).__init__(*args, **kwargs)
         self.fields['text'].queryset = MyText.objects.filter(Q(user__isnull=True) |  Q(user=user))
-        # self.fields['image'].queryset = MyText.objects.filter(Q(user__isnull=True) |  Q(user=user))
+        self.fields['image'].queryset = MyText.objects.filter(Q(user__isnull=True) |  Q(user=user))
 
 class SearchForm(forms.Form):
     key_word = forms.CharField(max_length=30, label='', required=False,widget=forms.TextInput(attrs={'placeholder': 'search username',}))

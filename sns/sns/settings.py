@@ -146,3 +146,5 @@ EMAIL_HOST_PASSWORD = 'hvwmdzffcyhqtaox'
 EMAIL_USE_TLS = True
 
 ACTIVATION_EXPIRED_DAYS = 1
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
