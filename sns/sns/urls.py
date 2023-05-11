@@ -25,7 +25,7 @@ urlpatterns = [
     path('accounts/',include('accounts.urls')),
     path('users/<uuid:activate_token>/activation/', activate_user, name='users-activation'),
     path('', include('app.urls')),
-    path('<str:name>/', ProfileView, name='profile'),
+    path('profile/<str:name>/', ProfileView, name='profile'),
     path('comment_detail/<int:pk>', CommentDetailView.as_view(), name='comment_detail'),
     path('<str:name>/edit', ProfileEditView, name='edit_bio'),
 ]
