@@ -311,6 +311,6 @@ def UnFollowView(request,*args, **kwargs):
         messages.warning(request, 'あなたは{0}をフォローしませんでした'.format(follow_target.name))
     return HttpResponseRedirect(reverse_lazy('sns:profile', kwargs={'name': follow_target.name}))
 
-class BaseFollowView(LoginRequiredMixin,ListView):
-    model = RelateUser
-    template_name = 'profile.html'
+# class BaseFollowView(LoginRequiredMixin,ListView):
+#     model = RelateUser
+#     template_name = 'profile.html'
