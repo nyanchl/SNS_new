@@ -10,7 +10,7 @@ class MyText(models.Model):
 
     user = models.ForeignKey(AuthUser,on_delete=models.CASCADE)
     text = models.TextField(max_length=255,null=False,blank=False)
-    image = models.ImageField(upload_to='img/',blank=True, null=True)
+    # image = models.ImageField(upload_to='img/',blank=True, null=True)
     textpoint = models.FloatField(verbose_name='textpoint',validators=[MinValueValidator(-100.000000), MaxValueValidator(100.000000)],blank=True, null=True)
     created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now=True)
