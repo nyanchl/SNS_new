@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+
+
 app_name = 'sns'
 
 urlpatterns = [
@@ -17,7 +19,7 @@ urlpatterns = [
 
     path('like_for_post/', views.like_for_post, name='like_for_post'),
     path('like_for_comment/', views.like_for_comment, name='like_for_comment'),
-    
+
     path('comment/create/<int:pk>/', views.CommentCreateView.as_view(), name='comment_create'),
     path('commenttocomment/create/<int:pk>/', views.CommentToCommentCreateView.as_view(), name='commenttocomment_create'),
 
