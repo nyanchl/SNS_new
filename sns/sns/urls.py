@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from accounts.views import activate_user
 from app.views import ProfileView,ProfileEditView,CommentDetailView
+from api import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +29,5 @@ urlpatterns = [
     path('profile/<str:name>/', ProfileView, name='profile'),
     path('comment_detail/<int:pk>', CommentDetailView.as_view(), name='comment_detail'),
     path('<str:name>/edit', ProfileEditView, name='edit_bio'),
+    path('api/', include(views.router.urls)),
 ]
