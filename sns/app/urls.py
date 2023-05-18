@@ -6,6 +6,8 @@ from . import views
 app_name = 'sns'
 
 urlpatterns = [
+    path('index/', views.index, name='index'),
+    
     path('',views.BaseView.as_view(),name='base'),
     path('',views.BaseUserView.as_view(),name='base'),
     path('post/', views.TextCreateView.as_view(), name='post'),

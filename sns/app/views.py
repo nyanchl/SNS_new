@@ -10,7 +10,7 @@ from django.views.generic import CreateView,ListView,DetailView,TemplateView,Upd
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect,JsonResponse
+from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from app.Analysis import analysisoutput
@@ -314,3 +314,5 @@ def UnFollowView(request,*args, **kwargs):
 # class BaseFollowView(LoginRequiredMixin,ListView):
 #     model = RelateUser
 #     template_name = 'profile.html'
+def index(request):
+    return render(request, 'index.html')
