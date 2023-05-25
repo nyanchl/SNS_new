@@ -1,5 +1,7 @@
+{% load static %}
 <h1>Home</h1>
-<a href="{% url 'sns:post' %}"><button class="btn">POST</button>
+<body>
+  <a href="{% url 'sns:post' %}"><button class="btn">POST</button>
     {% for post in posts %}
     <div>
         {{ post }}
@@ -7,7 +9,7 @@
     </div>
     {% endfor %}
 </a>
-<div class="post">
+<div id="base" class="post">
     {% for base in postdata %}
     <div class="alert alert-success" role="alert">
 
@@ -39,6 +41,7 @@
 <h5 class="text-center">
     <a href="{% url 'accounts:logout' %}" class="font-title">ログアウト</a>
 </h5>
+</body>
 
 <div>
   {% block extrajs %}
