@@ -16,6 +16,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from app.Analysis import analysisoutput
 from app.AnlysisComment import analysiscomment
 
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 import pprint
 import json
 import numpy as np
@@ -316,3 +320,9 @@ def UnFollowView(request,*args, **kwargs):
 #     template_name = 'profile.html'
 def index(request):
     return render(request, 'index.html')
+
+
+class SampleAPIView(APIView):
+
+    def get(self, request):
+        return Response("OK", status=status.HTTP_200_OK)

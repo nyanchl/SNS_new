@@ -30,4 +30,5 @@ urlpatterns = [
     path('comment_detail/<int:pk>', CommentDetailView.as_view(), name='comment_detail'),
     path('<str:name>/edit', ProfileEditView, name='edit_bio'),
     path('api/', include(views.router.urls)),
+    path('api/v1/', include('app.urls'))
 ]
