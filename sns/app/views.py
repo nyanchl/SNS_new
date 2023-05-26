@@ -318,8 +318,6 @@ def UnFollowView(request,*args, **kwargs):
 # class BaseFollowView(LoginRequiredMixin,ListView):
 #     model = RelateUser
 #     template_name = 'profile.html'
-def index(request):
-    return render(request, 'index.html')
 
 
 class SampleAPIView(APIView):

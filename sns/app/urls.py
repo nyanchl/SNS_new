@@ -6,7 +6,6 @@ from app.views import SampleAPIView
 app_name = 'sns'
 
 urlpatterns = [
-    path('index/', views.index, name='index'),
     path("sample/", SampleAPIView.as_view(), name="sample"),
     
     path('',views.BaseView.as_view(),name='base'),
