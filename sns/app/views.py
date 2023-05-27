@@ -324,3 +324,7 @@ class SampleAPIView(APIView):
 
     def get(self, request):
         return Response("OK", status=status.HTTP_200_OK)
+    
+class FrontBaseView(TemplateView):
+
+    template_name = "index.html"
