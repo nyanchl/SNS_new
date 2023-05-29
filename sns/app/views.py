@@ -320,6 +320,7 @@ def UnFollowView(request,*args, **kwargs):
 #     template_name = 'profile.html'
 
 
+
 class SampleAPIView(APIView):
 
     def get(self, request):
@@ -328,3 +329,4 @@ class SampleAPIView(APIView):
 class FrontBaseView(TemplateView):
 
     template_name = "index.html"
+

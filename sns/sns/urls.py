@@ -24,11 +24,12 @@ from api import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('app.urls')),
-    re_path(r"^.*$", FrontBaseView.as_view()),
+    # re_path(r"^.*$", FrontBaseView.as_view()),
     path('accounts/',include('accounts.urls')),
     path('users/<uuid:activate_token>/activation/', activate_user, name='users-activation'),
     path('', include('app.urls')),
     path('profile/<str:name>/', ProfileView, name='profile'),
     path('comment_detail/<int:pk>', CommentDetailView.as_view(), name='comment_detail'),
     path('<str:name>/edit', ProfileEditView, name='edit_bio'),
+    path('api/', include(views.router.urls)),
 ]
