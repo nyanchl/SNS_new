@@ -1,8 +1,8 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   publicPath: "/",
-  outputDir: "dist",
-  assetsDir:  "static",
+  outputDir: "../dist",
+  assetsDir: "static",
   indexPath: "../templates/index.html",
   transpileDependencies: true,
   devServer: {
@@ -10,9 +10,22 @@ module.exports = defineConfig({
     hot: "only",
     proxy: {
       "^/api": {
-        target: "http://127.0.0.1:8000/",
+        target: "http://localhost:8080",
         changeOrigin: true,
       },
     },
   },
+  chainWebpack: config => {
+  config.module
+    .rule('vue')
+    .use('vue-loader')
+    .loader('vue-loader')
+    .tap(options => {
+      options.compilerOptions = {
+        whitespace: 'condense',
+        delimiters: ['[[', ']]']
+      };
+      return options;
+    });
+  }
 })
