@@ -19,7 +19,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:8000/api/v1/sample/")
+      .get("http://localhost:8000/api/text/")
       .then((response) => (this.text = response.data))
       .then(response=>{
         console.log("status:",response.status)
