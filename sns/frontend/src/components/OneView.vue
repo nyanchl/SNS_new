@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
-    <div class="title-color">d [[ text ]] b</div>
+    <div class="title-color">d [[ texts ]] b</div>
+    <p v-for="(text,id) in texts" :key="id">
+        [[ text.text ]]
+    </p>
   </div>
 </template>
 
@@ -14,16 +17,16 @@ export default {
   },
   data() {
     return {
-      text: null,
+      texts: null,
     };
   },
   mounted() {
     axios
       .get("http://localhost:8000/api/text/")
-      .then((response) => (this.text = response.data))
+      .then((response) => (this.texts = response.data))
       .then(response=>{
-        console.log("status:",response.status)
-        console.log("axiosGetData:",response.data)
+        console.log("data:",response.data)
+        
       })
       .catch(err=>{
         console.log("axiosGetErr",err)

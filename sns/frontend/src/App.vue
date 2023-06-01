@@ -1,7 +1,9 @@
 <template>
+<div>
   <img alt="Vue logo" src="./assets/logo.png">
   <h1>Vue with Django</h1>
-   <router-view></router-view>
+  <router-view></router-view>
+</div>
 </template>
 
 <script>
