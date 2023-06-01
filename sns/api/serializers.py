@@ -5,4 +5,9 @@ from app.models import MyText
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyText
-        fields = ('user', 'text', 'textpoint','created_datetime')
+        fields = ('id','user', 'text', 'textpoint','created_datetime')
+
+class TextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyText
+        fields = ('text','textpoint')
