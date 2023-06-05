@@ -1,9 +1,10 @@
 <template>
   <div class="hello">
     <div class="title-color">d [[ texts ]] b</div>
-    <p v-for="(text,id) in texts" :key="id">
-        [[ text.text ]]
-    </p>
+    <div v-for="(text,user,id) in texts" :key="id">
+        <p>[[ text.user ]]</p>
+        <p>[[ text.text ]]</p>
+    </div>
   </div>
 </template>
 
@@ -20,6 +21,17 @@ export default {
       texts: null,
     };
   },
+  // computed: {
+  //   sortedTexts() {
+  //       const texts = this.texts
+  //       return _sortBy(texts,'id').reverse();
+  //   }
+  // },
+  // computed: {
+  //   sortedTexts() {
+  //     return this.texts.sort((a,b) => a.id - b.id)
+  //   }
+  // },
   mounted() {
     axios
       .get("http://localhost:8000/api/text/")
