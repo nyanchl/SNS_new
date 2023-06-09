@@ -1,9 +1,22 @@
 <template>
   <div class="hello">
+    <div class="col-3">
+      <button type="submit" class="btn btn-primary mt-auto">投稿</button>
+    </div>
     <div class="title-color">d [[ texts ]] b</div>
     <div v-for="(text,user,id) in texts" :key="id">
-        <p>[[ text.user ]]</p>
-        <p>[[ text.text ]]</p>
+      <table>
+        <thread>
+          <tr>
+          <th>[[ text.user ]]</th>
+          </tr>
+        </thread>
+      </table>
+      <tbody>
+        <tr>
+          <td>[[ text.text ]]</td>
+        </tr>
+      </tbody>
     </div>
   </div>
 </template>
@@ -21,17 +34,6 @@ export default {
       texts: null,
     };
   },
-  // computed: {
-  //   sortedTexts() {
-  //       const texts = this.texts
-  //       return _sortBy(texts,'id').reverse();
-  //   }
-  // },
-  // computed: {
-  //   sortedTexts() {
-  //     return this.texts.sort((a,b) => a.id - b.id)
-  //   }
-  // },
   mounted() {
     axios
       .get("http://localhost:8000/api/text/")
