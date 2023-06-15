@@ -1,8 +1,13 @@
 <template>
   <div class="hello">
-    <input type="text" v-model="texts"><br>
-    <button @click="createNewTexts">Post</button>
-    <div class="title-color">d [[ texts ]] b</div>
+    <form @submit.prevent="createNewTexts">
+      <div class="col-9">
+        <input type="text" class="form-control" v-model="postTexts" >
+      </div>
+      <div class="col-3">
+        <button type="submit" class="btn btn-primary mt-auto">投稿を追加</button>
+      </div>
+    </form>
     <div v-for="(text,user,id) in texts" :key="id">
       <table>
         <thread>
@@ -33,12 +38,12 @@ export default {
       texts: null,
     };
   },
-  mehods: {
+  methods: {
     createNewTexts(){
       axios
-        .post("http://localhost:8000/api/text/",{texts: this.texts})
+        .post("http://localhost:8000/api/text/",{"user":"nyanchl","text":this.postTexts})
         .then(response => this.texts(response.data))
-        .catch(error => console.log(error))
+        .catch(console.log(this.postTexts))
     },
   },
   mounted() {
