@@ -14,6 +14,6 @@ class UserApi(viewsets.ModelViewSet):
         if L_id:
             queryset = queryset.filter(user_id=L_id)
         return queryset
-
+    
 router = routers.DefaultRouter()
 router.register(r'text', UserApi)
