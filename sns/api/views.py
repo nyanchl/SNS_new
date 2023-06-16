@@ -17,3 +17,5 @@ class UserApi(viewsets.ModelViewSet):
     
 router = routers.DefaultRouter()
 router.register(r'text', UserApi)
+
+print("hoge")
