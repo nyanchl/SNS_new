@@ -33,4 +33,6 @@ urlpatterns = [
     path('comment_detail/<int:pk>', CommentDetailView.as_view(), name='comment_detail'),
     path('<str:name>/edit', ProfileEditView, name='edit_bio'),
     path('api/', include(views.router.urls)),
+    path('api/auth/',include('djoser.urls')),
+    path('api/auth/',include('djoser.urls.jwt')),
 ]

@@ -53,6 +53,7 @@ class AuthUser(AbstractBaseUser):
         db_table = 'user'
         verbose_name = 'User'
 
+    uuid = models.UUIDField(default=uuid_lib.uuid4, editable=False)
     username = models.CharField(verbose_name='username', null=False,unique=True,max_length=30)
     name = models.CharField(verbose_name='name',primary_key=True,unique=True,max_length=15)
     email = models.EmailField(verbose_name='email',unique=True)
