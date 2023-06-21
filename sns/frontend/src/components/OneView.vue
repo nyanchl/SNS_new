@@ -41,7 +41,7 @@ export default {
   methods: {
     createNewTexts(){
       axios
-        .post("http://localhost:8000/api/text/apitext",{"user":"nyanchl","text":this.postTexts})
+        .post("http://localhost:8000/api/text/apitext/",{"user":"nyanchl","text":this.postTexts})
         .then(response => this.texts(response.data))
         .catch(console.log(this.postTexts))
     },
