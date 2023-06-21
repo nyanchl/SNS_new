@@ -16,4 +16,4 @@ class UserApi(viewsets.ModelViewSet):
         return queryset
     
 router = routers.DefaultRouter()
-router.register(r'text', UserApi)
+router.register(r'apitext', UserApi)
