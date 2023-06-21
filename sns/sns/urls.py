@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('api/v1/', include('app.urls')),
     # re_path(r"^.*$", FrontBaseView.as_view()),
-    path('one/', FrontBaseView.as_view()),
+    path('home/', FrontBaseView.as_view()),
     path('accounts/',include('accounts.urls')),
     path('users/<uuid:activate_token>/activation/', activate_user, name='users-activation'),
     path('', include('app.urls')),

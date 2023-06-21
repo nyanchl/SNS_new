@@ -5,8 +5,8 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      name: 'One',
-      path: '/one',
+      name: 'Home',
+      path: '/home',
       component: OneView
     },
   ],

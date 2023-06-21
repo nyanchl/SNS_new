@@ -189,6 +189,8 @@ SIMPLE_JWT = {
 #     }
 # }
 
+APPEND_SLASH=False
+
 AUTH_USER_MODEL = 'accounts.AuthUser'
 
 LOGIN_ERROR_URL = '/accounts/login'
