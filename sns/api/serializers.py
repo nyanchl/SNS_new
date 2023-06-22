@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from app.models import MyText
+from accounts.models import AuthUser
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MyText
-        fields = ('id','user', 'text', 'textpoint','created_datetime')
+        model = AuthUser
+        fields = ('username', 'name')
 
 class TextSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyText
-        fields = ('text','textpoint')
+        fields = '__all__'

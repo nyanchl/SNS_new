@@ -41,14 +41,14 @@ export default {
   methods: {
     createNewTexts(){
       axios
-        .post("http://localhost:8000/api/text/apitext/",{"user":"nyanchl","text":this.postTexts})
+        .post("http://localhost:8000/api/text/",{"user":"nyanchl","text":this.postTexts})
         .then(response => this.texts(response.data))
         .catch(console.log(this.postTexts))
     },
   },
   mounted() {
     axios
-      .get("http://localhost:8000/api/text/apitext")
+      .get("http://localhost:8000/api/text/")
       .then((response) => (this.texts = response.data))
       .then(response=>{
         console.log("data:",response.data)

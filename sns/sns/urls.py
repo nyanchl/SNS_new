@@ -37,9 +37,6 @@ urlpatterns = [
     #アプリのapiのルーティング
     path('api/', include('api.urls')),
 
-    path('api/auth/',include('djoser.urls')),
-    path('api/auth/',include('djoser.urls.jwt')),
-
     #jwt-tokenの取得
     path('api-auth/jwt/', views.TokenObtainPairView.as_view()),
     #jwt-tokenの再取得

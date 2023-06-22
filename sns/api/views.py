@@ -1,11 +1,13 @@
-from rest_framework import viewsets, routers
+from rest_framework import viewsets
+from accounts.models import AuthUser
 from app.models import MyText
-from .serializers import UserSerializer
+from .serializers import UserSerializer,TextSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
-class UserApi(viewsets.ModelViewSet):
+class UserApiSet(viewsets.ModelViewSet):
     queryset = MyText.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = TextSerializer
 
     def get_queryset(self):
         queryset = MyText.objects.all()
@@ -14,6 +16,8 @@ class UserApi(viewsets.ModelViewSet):
         if L_id:
             queryset = queryset.filter(user_id=L_id)
         return queryset
-    
-router = routers.DefaultRouter()
-router.register(r'apitext', UserApi)
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = AuthUser.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
