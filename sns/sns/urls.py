@@ -24,8 +24,7 @@ from rest_framework_simplejwt import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/v1/', include('app.urls')),
-    # re_path(r"^.*$", FrontBaseView.as_view()),
+
     path('home/', FrontBaseView.as_view()),
     path('accounts/',include('accounts.urls')),
     path('users/<uuid:activate_token>/activation/', activate_user, name='users-activation'),
@@ -38,7 +37,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
 
     #jwt-tokenの取得
-    path('api-auth/jwt/', views.TokenObtainPairView.as_view()),
+    path('api-auth/jwt', views.TokenObtainPairView.as_view()),
     #jwt-tokenの再取得
     path('api-auth/jwt/refresh', views.TokenRefreshView.as_view()),
 ]
