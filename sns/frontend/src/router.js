@@ -12,7 +12,7 @@ const router = createRouter({
     },
     {
       name: 'Login',
-      path: '/login',
+      path: '/vuelogin',
       component: Login
     }
   ],

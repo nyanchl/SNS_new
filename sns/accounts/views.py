@@ -1,10 +1,13 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from .models import AuthUser
 from django.contrib.auth import get_user_model
-from .models import UserActivateTokens
 from django.http import HttpResponse
+from django.views.generic import TemplateView
+
+from .models import UserActivateTokens
+
+from .models import AuthUser
 
 User = get_user_model()
 # Create your views here.
@@ -38,3 +41,9 @@ def activate_user(request, activate_token):
     if not hasattr(activated_user, 'is_active'):
         message = 'エラーが発生しました'
     return HttpResponse(message)
+
+#フロント側ログイン
+class LoginBaseView(TemplateView):
+    """フロント側のログイン画面"""
+
+    template_name = "index.html"

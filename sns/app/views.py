@@ -319,14 +319,14 @@ def UnFollowView(request,*args, **kwargs):
 #     model = RelateUser
 #     template_name = 'profile.html'
 
-
-
-class SampleAPIView(APIView):
-
-    def get(self, request):
-        return Response("OK", status=status.HTTP_200_OK)
     
 class FrontBaseView(TemplateView):
+    """フロント側のホーム画面"""
 
     template_name = "index.html"
+
+class LoginBaseView(TemplateView):
+    """フロント側のログイン画面"""
+
+    template_name = "vuelogin.html"
 

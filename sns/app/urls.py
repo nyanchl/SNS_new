@@ -1,13 +1,10 @@
 from django.urls import path
 from . import views
-from app.views import SampleAPIView
-
 
 app_name = 'sns'
 
 urlpatterns = [
-    path("sample/", SampleAPIView.as_view(), name="sample"),
-    
+
     path('',views.BaseView.as_view(),name='base'),
     path('',views.BaseUserView.as_view(),name='base'),
     path('post/', views.TextCreateView.as_view(), name='post'),
@@ -29,4 +26,4 @@ urlpatterns = [
     path('profile/<str:name>/edit', views.ProfileEditView, name='edit_bio'),
     path('profile/<str:name>/follow', views.FollowView, name='follow'),
     path('profile/<str:name>/unfollow', views.UnFollowView, name='unfollow'),
-    ]
+]

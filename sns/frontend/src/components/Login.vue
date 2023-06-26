@@ -1,10 +1,22 @@
 <template>
-  <div class="login">
-    <form @submit.prevent="login">
-      <input type="text" v-model="email">
-      <input type="text" v-model="password">
-      <button type="submit">login</button>
-    </form>
+  <div>
+    <div class="login">
+      <form @submit.prevent="login">
+        email<input type="text" v-model="email">
+        password<input type="text" v-model="password">
+        <button type="submit">login</button>
+      </form>
+    </div>
+    <div class="getInfo">
+      <form @submit.prevent="getInfo">
+        <div v-for="(member, key) in User" :key="key">
+          <hr>
+          <p>username{{ member.username }}</p>
+          <hr>
+          <button type="submit">getInfo</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -18,6 +30,7 @@ export default {
   },
   data() {
     return {
+      User:[],
       tokens: {
         "refresh":'',
         "access":'',
@@ -27,6 +40,17 @@ export default {
     };
   },
   methods: {
+    getInfo(){
+      axios
+      .get("http://localhost:8000/api/user/",{headers: {
+        // postmanでのAPIcal同様にJWTが必要
+        // この通信がうまくいかない時はchromeの検証モード/networkから確認できる
+        "Authorization": 'JWT ' + this.tokens.access,
+      }
+      })
+      // レスポンスをMembersプロパティに格納
+      .then(response => (this.User = response.data));
+    },
     login(){
       // token取得のためのusernameとpasswordセット
       const data = {email: this.email, password: this.password}

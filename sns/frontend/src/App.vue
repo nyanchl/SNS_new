@@ -1,7 +1,7 @@
 <template>
 <div>
   <div>
-    <router-link to="/login">Login</router-link>
+    <router-link to="/vuelogin">Login</router-link>
   </div>
   <img alt="Vue logo" src="./assets/logo.png">
   <h1>Vue with Django</h1>

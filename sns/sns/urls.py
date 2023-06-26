@@ -18,7 +18,7 @@ from django.urls import path,include,re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from accounts.views import activate_user
-from app.views import ProfileView,ProfileEditView,CommentDetailView,FrontBaseView
+from app.views import ProfileView,ProfileEditView,CommentDetailView,FrontBaseView,LoginBaseView
 
 from rest_framework_simplejwt import views
 
@@ -26,6 +26,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('home/', FrontBaseView.as_view()),
+    path('vuelogin',LoginBaseView.as_view()),
+
     path('accounts/',include('accounts.urls')),
     path('users/<uuid:activate_token>/activation/', activate_user, name='users-activation'),
     path('', include('app.urls')),
