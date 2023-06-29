@@ -7,11 +7,10 @@
         <button type="submit">login</button>
       </form>
     </div>
-    <p>aaa</p>
-    <button @click="getInfo">メンバー情報を取得</button>
-    <div v-for="(member, key) in User" :key="key">
+    <button @click="getInfo">User情報を取得</button>
+    <div v-for="(name, key) in User" :key="key">
       <hr>
-      <p>{{ member.username }}</p>
+      <p>{{ name.name }}</p>
       <hr>
     </div>
   </div>
@@ -34,12 +33,14 @@ export default {
       },
       email: "",
       password: "",
+      name: "",
+      username: "",
     };
   },
   methods: {
     getInfo: function(){
       axios
-      .get("http://localhost:8000/api-auth/jwt/",{headers: {
+      .get("http://localhost:8000/api/user/",{headers: {
         // postmanでのAPIcal同様にJWTが必要
         // この通信がうまくいかない時はchromeの検証モード/networkから確認できる
         "Authorization": 'JWT ' + this.tokens.access,
@@ -47,7 +48,7 @@ export default {
       })
       // レスポンスをMembersプロパティに格納
       .then(response => (this.User = response.data));
-      console.log(this.User)
+      console.log(this.User);
     },
     login(){
       // token取得のためのusernameとpasswordセット
@@ -55,7 +56,6 @@ export default {
       // access_token&refresh_tokenを取得
       axios
         .post("http://localhost:8000/api-auth/jwt",data)
-        // レスポンスを一旦tokensプロパティに格納
         .then(response => (this.tokens = response.data));
     }
   },

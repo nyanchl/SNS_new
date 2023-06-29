@@ -6,7 +6,7 @@ from accounts.models import AuthUser
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUser
-        fields = ('username', 'name')
+        fields = '__all__'
 
 class TextSerializer(serializers.ModelSerializer):
     class Meta:

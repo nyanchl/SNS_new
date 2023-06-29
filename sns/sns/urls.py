@@ -28,15 +28,15 @@ urlpatterns = [
     path('home/', FrontBaseView.as_view()),
     path('vuelogin',LoginBaseView.as_view()),
 
+    #アプリのapiのルーティング
+    path('api/', include('api.urls')),
+
     path('accounts/',include('accounts.urls')),
     path('users/<uuid:activate_token>/activation/', activate_user, name='users-activation'),
     path('', include('app.urls')),
     path('profile/<str:name>/', ProfileView, name='profile'),
     path('comment_detail/<int:pk>', CommentDetailView.as_view(), name='comment_detail'),
     path('<str:name>/edit', ProfileEditView, name='edit_bio'),
-
-    #アプリのapiのルーティング
-    path('api/', include('api.urls')),
 
     #jwt-tokenの取得
     path('api-auth/jwt', views.TokenObtainPairView.as_view()),

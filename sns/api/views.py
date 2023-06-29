@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets,generics
 from accounts.models import AuthUser
 from app.models import MyText
 from .serializers import UserSerializer,TextSerializer
@@ -18,6 +18,7 @@ class UserApiSet(viewsets.ModelViewSet):
         return queryset
 
 class UserViewSet(viewsets.ModelViewSet):
+    #ユーザー情報
     queryset = AuthUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
