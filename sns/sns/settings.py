@@ -114,74 +114,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('JWT', ),
-    # 'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken', )
 }
-
-"""DJSOR"""
-#https://djoser.readthedocs.io/en/latest/settings.html
-
-# DJOSER = {
-#     #メールアドレスでログイン
-#     'LOGIN_FIELD': 'email',
-
-#     #アカウント本登録メール
-#     'SEND_ACTIVATION_EMAIL': True,
-
-#     #アカウント本登録完了メール
-#     'SEND_CONFIRMATION_EMAIL': True,
-
-#     #メールアドレス変更完了メール
-#     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
-
-#     #パスワード変更完了メール
-#     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
-
-#     #アカウント登録時に確認用パスワード必須
-#     'USER_CREATE_PASSWORD_RETYPE': True,
-
-#     #メールアドレス変更時に確認用メールアドレス必須
-#     'SET_USERNAME_RETYPE': True,
-
-#     #パスワード変更時に確認用パスワード必須
-#     'SET_PASSWORD_RETYPE': True,
-
-#     #アカウント本登録用URL
-#     'ACTIVATION_URL': 'activate/{uid}/{token}',
-
-#     #メールアドレスリセット完了用URL
-#     'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
-
-#     #パスワードリセット完了用URL
-#     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
-
-#     # カスタムユーザー用シリアライザー
-#     # https://note.crohaco.net/2018/django-rest-framework-serializer/
-#     # 'SERIALIZERS': {
-#     #     'user_create': 'accounts.serializers.UserSerializer',
-#     #     'user': 'accounts.serializers.UserSerializer',
-#     #     'current_user': 'accounts.serializers.UserSerializer',
-#     # },
-
-#     "EMAIL" : {
-#         # アカウント本登録
-#         'activation': 'accounts.email.ActivationEmail',
-
-#         # アカウント本登録完了
-#         'confirmation': 'accounts.email.ConfirmationEmail',
-
-#         # パスワードリセット
-#         'password_reset': 'accounts.email.PasswordResetEmail',
-
-#         # パスワードリセット完了
-#         'password_changed_confirmation': 'accounts.email.PasswordChangedConfirmationEmail',
-
-#         # メールアドレスリセット
-#         'username_reset': 'accounts.email.UsernameResetEmail',
-
-#         # メールアドレスリセット完了
-#         'username_changed_confirmation': 'accounts.email.UsernameChangedConfirmationEmail',
-#     }
-# }
 
 APPEND_SLASH=False
 

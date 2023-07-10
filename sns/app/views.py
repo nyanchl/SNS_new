@@ -1,8 +1,3 @@
-from .models import MyText,Comment,LikeForPost,LikeForComment
-from accounts.models import AuthUser,Profile,RelateUser
-from django.db.models import Count
-
-from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm,CommentToCommentCreateForm
 from django.forms.models import model_to_dict
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views import generic
@@ -13,6 +8,13 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
+
+from accounts.models import AuthUser,Profile,RelateUser
+
+from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm,CommentToCommentCreateForm
+from .models import MyText,Comment,LikeForPost,LikeForComment
+
 from app.Analysis import analysisoutput
 from app.AnlysisComment import analysiscomment
 
@@ -57,8 +59,6 @@ class PostDetailView(generic.DetailView):
         context['comment_form'] = CommentCreateForm
         postdata = self.object.likeforpost_set.count()
         context['postdata'] = postdata
-        # comment = self.object.comment_set.all()
-        # context['comment']
         # ログイン中のユーザーがイイねしているかどうか
         if self.object.likeforpost_set.filter(user=self.request.user).exists():
             context['is_user_liked_for_post'] = True

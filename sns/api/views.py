@@ -1,8 +1,13 @@
+from django.contrib.auth import get_user_model
+
 from rest_framework import viewsets,generics
+from rest_framework import serializers
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import get_authorization_header
+
+from .serializers import UserSerializer,TextSerializer,LoginedSerializer
 from accounts.models import AuthUser
 from app.models import MyText
-from .serializers import UserSerializer,TextSerializer
-from rest_framework.permissions import IsAuthenticated
 
 
 class UserApiSet(viewsets.ModelViewSet):
@@ -11,14 +16,17 @@ class UserApiSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = MyText.objects.all()
-        L_id = self.request.query_params.get('id')
-
-        if L_id:
-            queryset = queryset.filter(user_id=L_id)
         return queryset
+    
+    def get_logined_user(self, request):
+        queryset = AuthUser.objects.filter(username=request.user)
+        serializer = LoginedSerializer(queryset)
+        return serializer
+
 
 class UserViewSet(viewsets.ModelViewSet):
-    #ユーザー情報
-    queryset = AuthUser.objects.all()
+    """ユーザー情報"""
+    
+    queryset = AuthUser.objects.filter(username="Nyanchl")
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)

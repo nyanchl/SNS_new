@@ -21,6 +21,7 @@ from accounts.views import activate_user
 from app.views import ProfileView,ProfileEditView,CommentDetailView,FrontBaseView,LoginBaseView
 
 from rest_framework_simplejwt import views
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,6 +39,7 @@ urlpatterns = [
     path('comment_detail/<int:pk>', CommentDetailView.as_view(), name='comment_detail'),
     path('<str:name>/edit', ProfileEditView, name='edit_bio'),
 
+    path('api-auth', obtain_jwt_token),
     #jwt-tokenの取得
     path('api-auth/jwt', views.TokenObtainPairView.as_view()),
     #jwt-tokenの再取得

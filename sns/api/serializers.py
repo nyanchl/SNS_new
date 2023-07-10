@@ -8,7 +8,14 @@ class UserSerializer(serializers.ModelSerializer):
         model = AuthUser
         fields = '__all__'
 
+
 class TextSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyText
+        fields = '__all__'
+
+
+class LoginedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AuthUser
         fields = '__all__'

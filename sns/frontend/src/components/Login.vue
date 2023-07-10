@@ -7,10 +7,11 @@
         <button type="submit">login</button>
       </form>
     </div>
+    <p>User</p>
     <button @click="getInfo">User情報を取得</button>
-    <div v-for="(name, key) in User" :key="key">
+    <div v-for="(user, uuid) in User" :key="uuid">
       <hr>
-      <p>{{ name.name }}</p>
+      <p>[[ user.name ]]</p>
       <hr>
     </div>
   </div>
