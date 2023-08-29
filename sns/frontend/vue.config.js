@@ -5,18 +5,6 @@ module.exports = defineConfig({
   assetsDir: "static",
   indexPath: "../templates/index.html",
   transpileDependencies: true,
-  // pages: {
-  //   index: {
-  //     entry: "./src/main.js",
-  //     template: "../templates/index.html",
-  //     filename: "../templates/index.html",
-  //   },
-  //   vuelogin: {
-  //     entry: "./src/main.js",
-  //     template: "../templates/vuelogin.html",
-  //     filename: "../templates/vuelogin.html",
-  //   }
-  // },
   devServer: {
     host: "localhost",
     hot: "only",

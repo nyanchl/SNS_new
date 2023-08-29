@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import OneView from './components/OneView';
+import Index from './components/Index';
 import Login from './components/Login';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      name: 'Home',
+      name: 'INdex',
       path: '/home',
-      component: OneView
+      component: Index
     },
     {
       name: 'Login',
-      path: '/vuelogin',
+      path: '/login',
       component: Login
     }
   ],
