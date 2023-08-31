@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path,include,re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
+
 from accounts.views import activate_user
-from app.views import ProfileView,ProfileEditView,CommentDetailView,FrontBaseView,LoginBaseView
+from app.views import ProfileView,ProfileEditView,CommentDetailView,LoginBaseView
 
 from rest_framework_simplejwt import views
 from rest_framework_jwt.views import obtain_jwt_token
@@ -26,7 +28,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('home/', FrontBaseView.as_view()),
+    path('home/', TemplateView.as_view(template_name="index.html")),
     path('vuelogin',LoginBaseView.as_view()),
 
     #アプリのapiのルーティング

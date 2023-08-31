@@ -1,56 +1,68 @@
 <template>
-  <v-container grid-list-md>
-    <v-flex xs12 sm8 lg4 md5>
-      <v-layout row wrap align-center justify-center fill-height>
-        <v-card class="login-card">
-          <v-card-title>
-          <span class="headline">Hoge</span>
-          </v-card-title>
-          <p>debug</p>
-          <v-card-text>
-            <v-layout row fill-height justify-center align-center v-if="loading">
-                <v-progress-circular
-                :size="50"
-                color="primary"
-                indeterminate
-                />
-            </v-layout>
-
-
-            <v-form v-else ref="form" v-model="valid" lazy-validation>
-                <v-container>
-
-                <v-text-field v-model="credentials.username" :counter="70" label="Eメールアドレス" maxlength="70" required/>
-
-                <v-text-field type="password" v-model="credentials.password" :counter="20" label="パスワード" maxlength="20" required/>
-
-                </v-container>
-                <v-btn class="pink white--text" :disabled="!valid" @click="login">Login</v-btn>
-
-            </v-form>
-
-
-            </v-card-text>
-        </v-card>
-      </v-layout>
-    </v-flex>
-  </v-container>
+  <div>
+    <div class="login">
+      <form @submit.prevent="login">
+        email<input type="text" v-model="email">
+        password<input type="text" v-model="password">
+        <button type="submit">login</button>
+      </form>
+    </div>
+    <button @click="getInfo">User情報を取得</button>
+    <div v-for="(user, uuid) in User" :key="uuid">
+      <hr>
+      <p>[[ user.name ]]</p>
+      <hr>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {
-    name: 'Login',
-    data: () => ({
-        credentials: {},
-        valid:true,
-        loading:false
-    }),
-    methods: {
-        login() {
+import axios from "axios";
+import router from "../router";
 
-        }
+export default {
+  name: "LoginView",
+  props: {
+    msg: String,
+  },
+  data() {
+    return {
+      User: [],
+      tokens: {
+        "refresh":'',
+        "access":'',
+      },
+      email: "",
+      password: "",
+      name: "",
+      username: "",
+    };
+  },
+  methods: {
+    getInfo: function(){
+      axios
+      .get("http://localhost:8000/api/user/",{headers: {
+        "Authorization": 'JWT ' + this.tokens.access,
+      }
+      })
+      .then(response => (this.User = response.data));
+      this.$session.start();
+      this.$session.set('user', this.User)
+      router.push('/');
+    },
+    login(){
+      // token取得のためのusernameとpasswordセット
+      const data = {email: this.email, password: this.password}
+      // access_token&refresh_tokenを取得
+      axios
+        .post("http://localhost:8000/api-auth/jwt",data)
+        .then(response => (this.tokens = response.data));
+        this.$session.start();
+        this.$session.set('token', this.tokens)
+        router.push('/');
     }
-}
+  },
+};
 </script>
 
 <style scoped>

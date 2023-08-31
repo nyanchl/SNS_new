@@ -1,11 +1,20 @@
 <template>
-  <v-app>
-   <router-view/>
-  </v-app>
+    <div>
+        Home
+    </div>
 </template>
 
 <script>
+import router from "./router";
 export default {
-  name: 'App'
-}
+  name: "App",
+  mounted() {
+    this.checkLoggedIn();
+  },
+  methods: {
+    checkLoggedIn() {
+        router.push('/login');
+    }
+  }
+};
 </script>

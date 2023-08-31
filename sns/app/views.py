@@ -319,11 +319,6 @@ def UnFollowView(request,*args, **kwargs):
 #     model = RelateUser
 #     template_name = 'profile.html'
 
-    
-class FrontBaseView(TemplateView):
-    """フロント側のホーム画面"""
-
-    template_name = "index.html"
 
 class LoginBaseView(TemplateView):
     """フロント側のログイン画面"""
