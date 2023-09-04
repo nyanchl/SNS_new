@@ -8,9 +8,11 @@
         <span class="updated_datetime">{{ post.updated_datetime }}</span>
     </div>
     {% endfor %}
-</a>
+  </a>
+  <a href="{% url 'sns:notice' %}">通知</a>
 <div id="base" class="post">
     {% for base in postdata %}
+    
     <div class="alert alert-success" role="alert">
 
       <a href="{% url 'profile' base.user.name %}">{{ base.user.username }}</a>

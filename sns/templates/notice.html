@@ -1,0 +1,17 @@
+{% if user %}
+    <div>
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+        {% for text in texts %}
+        <a href="{% url 'sns:post_detail' text.pk %}"><p>{{ text }}</p></a>
+        <div class="text">
+            <form action="{% url 'sns:delete_text' text.pk %}">{% csrf_token %}
+              <button class="btn" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
+            </form>
+            <button><a class="btn" href="{% url 'sns:edit_text' text.pk %}">編集</a></button>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+<a href="{% url 'sns:base' %}">戻る</a>
