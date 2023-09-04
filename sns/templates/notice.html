@@ -1,9 +1,7 @@
 {% if user %}
     <div>
-        {% for message in messages %}
-        <p>{{ message }}</p>
-        {% endfor %}
         {% for text in texts %}
+        <p>この投稿の内容は不適切なので編集か削除することをおすすめします</p>
         <a href="{% url 'sns:post_detail' text.pk %}"><p>{{ text }}</p></a>
         <div class="text">
             <form action="{% url 'sns:delete_text' text.pk %}">{% csrf_token %}

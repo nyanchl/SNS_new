@@ -325,8 +325,6 @@ def Notice(request):
     context = {'user': request_user,
                'texts': get_mytext_negative}
 
-    for count in get_mytext_negative:
-        messages.add_message(request, messages.WARNING, "この投稿の内容は不適切なので編集か削除することをおすすめします")
     return render(request, 'notice.html', context)
 
 
