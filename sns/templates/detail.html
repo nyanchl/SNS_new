@@ -1,5 +1,7 @@
 {% load app %}
+{% load static %}
 <div class="text_detail">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
   <div class="indetail">
     <p>{{ mytext.text }}</p>
     {% if is_user_liked_for_post %}
