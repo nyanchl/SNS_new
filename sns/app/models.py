@@ -43,7 +43,6 @@ class LikeForPost(models.Model):
         return self.target
 
     
-
 class LikeForComment(models.Model):
     class Meta:
         db_table = 'commetforlike'

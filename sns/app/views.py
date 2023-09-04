@@ -1,8 +1,4 @@
-from .models import MyText,Comment,LikeForPost,LikeForComment
-from accounts.models import AuthUser,Profile,RelateUser
 from django.db.models import Count
-
-from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm,CommentToCommentCreateForm
 from django.forms.models import model_to_dict
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views import generic
@@ -13,19 +9,22 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from app.Analysis import analysisoutput
-from app.AnlysisComment import analysiscomment
 
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm,CommentToCommentCreateForm
+from .models import MyText,Comment,LikeForPost,LikeForComment
+from accounts.models import AuthUser,Profile,RelateUser
+
+from app.Analysis import analysisoutput
+from app.AnalysisComment import analysiscomment
+
 import pprint
 import json
 import numpy as np
 
-
-#=================================default======================================================
 
 class BaseView(LoginRequiredMixin,ListView):
     model = MyText
@@ -36,17 +35,22 @@ class BaseView(LoginRequiredMixin,ListView):
         context['like_for_post'] = LikeForPost.objects.all()
         postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
         context['postdata'] = postdata
+
+        get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5)
+        context['message_count'] = get_mytext_negative.count()
+
         if LikeForPost.objects.filter(user=self.request.user).exists():
             context['is_user_liked_for_post'] = True
         else:
             context['is_user_liked_for_post'] = False
 
         return context
-        
+    
 
 class BaseUserView(ListView):
     model = AuthUser
     template_name = 'base.html'
+
 
 class PostDetailView(generic.DetailView):
     template_name = 'detail.html'
@@ -57,8 +61,6 @@ class PostDetailView(generic.DetailView):
         context['comment_form'] = CommentCreateForm
         postdata = self.object.likeforpost_set.count()
         context['postdata'] = postdata
-        # comment = self.object.comment_set.all()
-        # context['comment']
         # ログイン中のユーザーがイイねしているかどうか
         if self.object.likeforpost_set.filter(user=self.request.user).exists():
             context['is_user_liked_for_post'] = True
@@ -77,6 +79,7 @@ class PostDetailView(generic.DetailView):
             context[f'comment_like_data'] = d
         
         return context
+
 
 class CommentDetailView(generic.DetailView):
     template_name = 'commentdetail.html'
@@ -123,6 +126,7 @@ class CommentCreateView(generic.CreateView):
         
         return redirect('sns:post_detail', pk=text_pk)
     
+
 class CommentToCommentCreateView(generic.CreateView):
     model = Comment
     form_class = CommentToCommentCreateForm
@@ -136,7 +140,6 @@ class CommentToCommentCreateView(generic.CreateView):
         commenttocomment.save()
 
         return redirect('sns:comment_detail', pk=comment_pk)
-
 
 
 @method_decorator(login_required, name='dispatch')
@@ -273,7 +276,6 @@ def ProfileEditView(request,name):
 
     
 #===========================follow==============================
-
 @login_required
 def FollowView(request,*args,**kwargs):
 
@@ -315,9 +317,17 @@ def UnFollowView(request,*args, **kwargs):
         messages.warning(request, 'あなたは{0}をフォローしませんでした'.format(follow_target.name))
     return HttpResponseRedirect(reverse_lazy('sns:profile', kwargs={'name': follow_target.name}))
 
-# class BaseFollowView(LoginRequiredMixin,ListView):
-#     model = RelateUser
-#     template_name = 'profile.html'
+
+def Notice(request):
+    request_user = AuthUser.objects.filter(name=request.user.name)
+    get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5)
+
+    context = {'user': request_user,
+               'texts': get_mytext_negative}
+
+    for count in get_mytext_negative:
+        messages.add_message(request, messages.WARNING, "この投稿の内容は不適切なので編集か削除することをおすすめします")
+    return render(request, 'notice.html', context)
 
 
 
@@ -326,7 +336,7 @@ class SampleAPIView(APIView):
     def get(self, request):
         return Response("OK", status=status.HTTP_200_OK)
     
+
 class FrontBaseView(TemplateView):
 
     template_name = "index.html"
-
