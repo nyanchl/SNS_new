@@ -29,4 +29,6 @@ urlpatterns = [
     path('profile/<str:name>/edit', views.ProfileEditView, name='edit_bio'),
     path('profile/<str:name>/follow', views.FollowView, name='follow'),
     path('profile/<str:name>/unfollow', views.UnFollowView, name='unfollow'),
+
+    path('notice/', views.Notice, name='notice'),
     ]

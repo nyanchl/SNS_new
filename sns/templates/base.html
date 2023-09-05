@@ -9,20 +9,25 @@
   </div>
 </head>
 <body>
-  <a href="{% url 'sns:post' %}"><button class="post">POST</button>
-  {% for post in posts %}
-  <div>
-      {{ post }}
-      <span class="updated_datetime">{{ post.updated_datetime }}</span>
-  </div>
-  {% endfor %}
+  <a href="{% url 'sns:post' %}"><button class="btn">POST</button>
+    {% for post in posts %}
+    <div>
+        {{ post }}
+        <span class="updated_datetime">{{ post.updated_datetime }}</span>
+    </div>
+    {% endfor %}
   </a>
-  <div class="users-postdata">
-  {% for post in postdata %}
-    <div class="post-{{post.pk}}"> 
-      <h4 class="user">
-        <a class="name" href="{% url 'profile' post.user.name %}">{{ post.user.username }}</a>
-      </h4>
+  {% if request.user.is_authenticated %}
+    {% if message_count == 0 %}
+    <a href="{% url 'sns:notice' %}">通知</a>
+    {% else %}
+    <a href="{% url 'sns:notice' %}">通知:{{ message_count }}</a>
+    {% endif %}
+  {% endif %}
+<div id="base" class="post">
+    {% for base in postdata %}
+    
+    <div class="alert alert-success" role="alert">
 
       {% comment %} <input id="itemlist" type="checkbox"> {% endcomment %}
       <label class="itemlist" for="itemlist">:</label>

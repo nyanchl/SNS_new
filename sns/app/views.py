@@ -1,8 +1,4 @@
-from .models import MyText,Comment,LikeForPost,LikeForComment
-from accounts.models import AuthUser,Profile,RelateUser
 from django.db.models import Count
-
-from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm,CommentToCommentCreateForm
 from django.forms.models import model_to_dict
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views import generic
@@ -13,21 +9,25 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from app.Analysis import analysisoutput
-from app.AnlysisComment import analysiscomment
 
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm,CommentToCommentCreateForm
+from .models import MyText,Comment,LikeForPost,LikeForComment
+from accounts.models import AuthUser,Profile,RelateUser
+
+from app.Analysis import analysisoutput
+from app.AnalysisComment import analysiscomment
 
 import pprint
 import json
 import numpy as np
 
 
-#=================================default======================================================
-
 class BaseView(LoginRequiredMixin,ListView):
+    """ホーム画面"""
     model = MyText
     template_name = 'base.html'
 
@@ -36,19 +36,25 @@ class BaseView(LoginRequiredMixin,ListView):
         context['like_for_post'] = LikeForPost.objects.all()
         postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
         context['postdata'] = postdata
+
+        get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)
+        context['message_count'] = get_mytext_negative.count()
+
         if LikeForPost.objects.filter(user=self.request.user).exists():
             context['is_user_liked_for_post'] = True
         else:
             context['is_user_liked_for_post'] = False
 
         return context
-        
+    
 
 class BaseUserView(ListView):
     model = AuthUser
     template_name = 'base.html'
 
+
 class PostDetailView(generic.DetailView):
+    """投稿詳細"""
     template_name = 'detail.html'
     model = MyText
 
@@ -57,8 +63,6 @@ class PostDetailView(generic.DetailView):
         context['comment_form'] = CommentCreateForm
         postdata = self.object.likeforpost_set.count()
         context['postdata'] = postdata
-        # comment = self.object.comment_set.all()
-        # context['comment']
         # ログイン中のユーザーがイイねしているかどうか
         if self.object.likeforpost_set.filter(user=self.request.user).exists():
             context['is_user_liked_for_post'] = True
@@ -78,7 +82,9 @@ class PostDetailView(generic.DetailView):
         
         return context
 
+
 class CommentDetailView(generic.DetailView):
+    """コメント詳細"""
     template_name = 'commentdetail.html'
     model = Comment
 
@@ -90,18 +96,17 @@ class CommentDetailView(generic.DetailView):
         return context
     
     
-
-#=================================positive======================================================
 def positivebase(request):
+    """ポジティブ投稿ページ"""
     querypoint = MyText.objects.filter(textpoint__gte='0.0')
     context = {
         'querypoint':querypoint,
     }
     return render(request,'positive.html',context)
 
-#================TEXT&COMMENT CRUD================
 
 class CommentCreateView(generic.CreateView):
+    """コメント作成"""
     model = Comment
     form_class = CommentCreateForm
 
@@ -112,7 +117,6 @@ class CommentCreateView(generic.CreateView):
         comment = form.save(commit=False)
         comment.user = self.request.user
         comment.target_text = text
-
         #----------------------------------------MeCab---------------------------------------
         commenttex = model_to_dict(comment)                                     
         jsontext = json.dumps(commenttex)
@@ -123,7 +127,9 @@ class CommentCreateView(generic.CreateView):
         
         return redirect('sns:post_detail', pk=text_pk)
     
+
 class CommentToCommentCreateView(generic.CreateView):
+    """コメント作成(コメント)"""
     model = Comment
     form_class = CommentToCommentCreateForm
 
@@ -136,7 +142,6 @@ class CommentToCommentCreateView(generic.CreateView):
         commenttocomment.save()
 
         return redirect('sns:comment_detail', pk=comment_pk)
-
 
 
 @method_decorator(login_required, name='dispatch')
@@ -164,12 +169,16 @@ class TextCreateView(CreateView):
     
     success_url = reverse_lazy('sns:base')
 
+
 def TextDeleteView(request,pk):
+    """投稿削除"""
     texts = get_object_or_404(MyText, pk=pk)
     texts.delete()
     return redirect('sns:base')
 
+
 class TextEditView(generic.UpdateView):
+    """投稿編集"""
     model = MyText
     form_class = TextEditForm
     template_name = 'mytextedit.html'
@@ -189,9 +198,9 @@ class TextEditView(generic.UpdateView):
         
         return redirect('sns:edit_text', pk=text_pk)
 
-#===============================like==============================
 
 def like_for_post(request):
+    """いいね(投稿)"""
     text_pk = request.POST.get('text_pk')
     context = {
         'user': '{request.user.name}',
@@ -209,7 +218,9 @@ def like_for_post(request):
 
     return JsonResponse(context)
 
+
 def like_for_comment(request):
+    """いいね(コメント)"""
     comment_pk = request.POST.get('comment_pk')
     context = {
         'user': '{request.user.name}',
@@ -227,9 +238,9 @@ def like_for_comment(request):
 
     return JsonResponse(context)
 
-#=====================profile=====================
+
 def ProfileView(request,name):
-    """ profile """
+    """プロフィール"""
     user = get_object_or_404(AuthUser,pk=name)
     profile = Profile.objects.get(user=user)
     text = MyText.objects.filter(user=user)
@@ -259,6 +270,7 @@ def ProfileView(request,name):
 
 
 def ProfileEditView(request,name):
+    """プロフィール編集"""
     user = get_object_or_404(AuthUser,pk=name)
     profile = Profile.objects.get(user=user)
     form = ProfileEditForm(request.POST,instance=profile)
@@ -272,11 +284,9 @@ def ProfileEditView(request,name):
     return render(request, 'edit.html', context)
 
     
-#===========================follow==============================
-
 @login_required
 def FollowView(request,*args,**kwargs):
-
+    """フォロー"""
     try:
         owner = AuthUser.objects.get(name=request.user.name)
         follow_target = AuthUser.objects.get(name=kwargs['name'])
@@ -296,7 +306,7 @@ def FollowView(request,*args,**kwargs):
 
 @login_required
 def UnFollowView(request,*args, **kwargs):
-    
+    """フォロー解除"""
     try:
         owner = AuthUser.objects.get(name=request.user.name)
         follow_target = AuthUser.objects.get(name=kwargs['name'])
@@ -315,10 +325,16 @@ def UnFollowView(request,*args, **kwargs):
         messages.warning(request, 'あなたは{0}をフォローしませんでした'.format(follow_target.name))
     return HttpResponseRedirect(reverse_lazy('sns:profile', kwargs={'name': follow_target.name}))
 
-# class BaseFollowView(LoginRequiredMixin,ListView):
-#     model = RelateUser
-#     template_name = 'profile.html'
 
+def Notice(request):
+    """通知機能"""
+    get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5)
+    user_name = request.user
+
+    context = {'user_name': user_name,
+               'texts': get_mytext_negative}
+
+    return render(request, 'notice.html', context)
 
 
 class SampleAPIView(APIView):
@@ -326,7 +342,7 @@ class SampleAPIView(APIView):
     def get(self, request):
         return Response("OK", status=status.HTTP_200_OK)
     
+
 class FrontBaseView(TemplateView):
 
     template_name = "index.html"
-
