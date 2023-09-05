@@ -1,7 +1,9 @@
-{% if user %}
+{% if request.user.is_authenticated %}
     <div>
         {% for text in texts %}
-        <p>この投稿の内容は不適切なので編集か削除することをおすすめします</p>
+        {% if text.user == user_name %}
+        <h4>{{ text.user }}</h4>
+        <p>注意:この投稿に不適切な内容が含まれているので編集か削除することをおすすめします</p>
         <a href="{% url 'sns:post_detail' text.pk %}"><p>{{ text }}</p></a>
         <div class="text">
             <form action="{% url 'sns:delete_text' text.pk %}">{% csrf_token %}
@@ -9,6 +11,7 @@
             </form>
             <button><a class="btn" href="{% url 'sns:edit_text' text.pk %}">編集</a></button>
         </div>
+        {% endif %}
         {% endfor %}
     </div>
 {% endif %}

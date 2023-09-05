@@ -9,7 +9,13 @@
     </div>
     {% endfor %}
   </a>
-  <a href="{% url 'sns:notice' %}">通知</a>
+  {% if request.user.is_authenticated %}
+    {% if message_count == 0 %}
+    <a href="{% url 'sns:notice' %}">通知</a>
+    {% else %}
+    <a href="{% url 'sns:notice' %}">通知:{{ message_count }}</a>
+    {% endif %}
+  {% endif %}
 <div id="base" class="post">
     {% for base in postdata %}
     

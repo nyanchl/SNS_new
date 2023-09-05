@@ -36,7 +36,7 @@ class BaseView(LoginRequiredMixin,ListView):
         postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
         context['postdata'] = postdata
 
-        get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5)
+        get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)
         context['message_count'] = get_mytext_negative.count()
 
         if LikeForPost.objects.filter(user=self.request.user).exists():
@@ -319,10 +319,12 @@ def UnFollowView(request,*args, **kwargs):
 
 
 def Notice(request):
-    request_user = AuthUser.objects.filter(name=request.user.name)
+    """通知機能"""
     get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5)
 
-    context = {'user': request_user,
+    user_name = request.user
+
+    context = {'user_name': user_name,
                'texts': get_mytext_negative}
 
     return render(request, 'notice.html', context)
