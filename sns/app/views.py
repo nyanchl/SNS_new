@@ -27,6 +27,7 @@ import numpy as np
 
 
 class BaseView(LoginRequiredMixin,ListView):
+    """ホーム画面"""
     model = MyText
     template_name = 'base.html'
 
@@ -53,6 +54,7 @@ class BaseUserView(ListView):
 
 
 class PostDetailView(generic.DetailView):
+    """投稿詳細"""
     template_name = 'detail.html'
     model = MyText
 
@@ -82,6 +84,7 @@ class PostDetailView(generic.DetailView):
 
 
 class CommentDetailView(generic.DetailView):
+    """コメント詳細"""
     template_name = 'commentdetail.html'
     model = Comment
 
@@ -93,18 +96,17 @@ class CommentDetailView(generic.DetailView):
         return context
     
     
-
-#=================================positive======================================================
 def positivebase(request):
+    """ポジティブ投稿ページ"""
     querypoint = MyText.objects.filter(textpoint__gte='0.0')
     context = {
         'querypoint':querypoint,
     }
     return render(request,'positive.html',context)
 
-#================TEXT&COMMENT CRUD================
 
 class CommentCreateView(generic.CreateView):
+    """コメント作成"""
     model = Comment
     form_class = CommentCreateForm
 
@@ -115,7 +117,6 @@ class CommentCreateView(generic.CreateView):
         comment = form.save(commit=False)
         comment.user = self.request.user
         comment.target_text = text
-
         #----------------------------------------MeCab---------------------------------------
         commenttex = model_to_dict(comment)                                     
         jsontext = json.dumps(commenttex)
@@ -128,6 +129,7 @@ class CommentCreateView(generic.CreateView):
     
 
 class CommentToCommentCreateView(generic.CreateView):
+    """コメント作成(コメント)"""
     model = Comment
     form_class = CommentToCommentCreateForm
 
@@ -167,12 +169,16 @@ class TextCreateView(CreateView):
     
     success_url = reverse_lazy('sns:base')
 
+
 def TextDeleteView(request,pk):
+    """投稿削除"""
     texts = get_object_or_404(MyText, pk=pk)
     texts.delete()
     return redirect('sns:base')
 
+
 class TextEditView(generic.UpdateView):
+    """投稿編集"""
     model = MyText
     form_class = TextEditForm
     template_name = 'mytextedit.html'
@@ -192,9 +198,9 @@ class TextEditView(generic.UpdateView):
         
         return redirect('sns:edit_text', pk=text_pk)
 
-#===============================like==============================
 
 def like_for_post(request):
+    """いいね(投稿)"""
     text_pk = request.POST.get('text_pk')
     context = {
         'user': '{request.user.name}',
@@ -212,7 +218,9 @@ def like_for_post(request):
 
     return JsonResponse(context)
 
+
 def like_for_comment(request):
+    """いいね(コメント)"""
     comment_pk = request.POST.get('comment_pk')
     context = {
         'user': '{request.user.name}',
@@ -230,9 +238,9 @@ def like_for_comment(request):
 
     return JsonResponse(context)
 
-#=====================profile=====================
+
 def ProfileView(request,name):
-    """ profile """
+    """プロフィール"""
     user = get_object_or_404(AuthUser,pk=name)
     profile = Profile.objects.get(user=user)
     text = MyText.objects.filter(user=user)
@@ -262,6 +270,7 @@ def ProfileView(request,name):
 
 
 def ProfileEditView(request,name):
+    """プロフィール編集"""
     user = get_object_or_404(AuthUser,pk=name)
     profile = Profile.objects.get(user=user)
     form = ProfileEditForm(request.POST,instance=profile)
@@ -275,10 +284,9 @@ def ProfileEditView(request,name):
     return render(request, 'edit.html', context)
 
     
-#===========================follow==============================
 @login_required
 def FollowView(request,*args,**kwargs):
-
+    """フォロー"""
     try:
         owner = AuthUser.objects.get(name=request.user.name)
         follow_target = AuthUser.objects.get(name=kwargs['name'])
@@ -298,7 +306,7 @@ def FollowView(request,*args,**kwargs):
 
 @login_required
 def UnFollowView(request,*args, **kwargs):
-    
+    """フォロー解除"""
     try:
         owner = AuthUser.objects.get(name=request.user.name)
         follow_target = AuthUser.objects.get(name=kwargs['name'])
@@ -321,14 +329,12 @@ def UnFollowView(request,*args, **kwargs):
 def Notice(request):
     """通知機能"""
     get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5)
-
     user_name = request.user
 
     context = {'user_name': user_name,
                'texts': get_mytext_negative}
 
     return render(request, 'notice.html', context)
-
 
 
 class SampleAPIView(APIView):
