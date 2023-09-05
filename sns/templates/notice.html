@@ -1,17 +1,17 @@
 {% if request.user.is_authenticated %}
-    <div>
+    <div class="message-alert">
         {% for text in texts %}
-        {% if text.user == user_name %}
-        <h4>{{ text.user }}</h4>
-        <p>注意:この投稿に不適切な内容が含まれているので編集か削除することをおすすめします</p>
-        <a href="{% url 'sns:post_detail' text.pk %}"><p>{{ text }}</p></a>
-        <div class="text">
-            <form action="{% url 'sns:delete_text' text.pk %}">{% csrf_token %}
-              <button class="btn" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
-            </form>
-            <button><a class="btn" href="{% url 'sns:edit_text' text.pk %}">編集</a></button>
-        </div>
-        {% endif %}
+            {% if text.user == user_name %}
+            <h4>{{ text.user }}</h4>
+            <p>注意:この投稿に不適切な内容が含まれているので編集か削除することをおすすめします</p>
+            <a href="{% url 'sns:post_detail' text.pk %}"><p>{{ text }}</p></a>
+            <div class="text">
+                <form action="{% url 'sns:delete_text' text.pk %}">{% csrf_token %}
+                <button class="btn" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
+                </form>
+                <button><a class="btn" href="{% url 'sns:edit_text' text.pk %}">編集</a></button>
+            </div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endif %}
