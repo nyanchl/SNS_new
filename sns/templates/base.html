@@ -16,7 +16,7 @@
     <a href="{% url 'sns:notice' %}">通知:{{ message_count }}</a>
     {% endif %}
   {% endif %}
-<div id="base" class="post">
+  <div id="base" class="post">
     {% for base in postdata %}
     
     <div class="alert alert-success" role="alert">
@@ -46,6 +46,7 @@
       <span id="like-for-post-count-{{base.pk}}">{{ base.like }}</span>
     </div>
     {% endfor %}
+  </div>
 <h5 class="text-center">
     <a href="{% url 'accounts:logout' %}" class="font-title">ログアウト</a>
 </h5>

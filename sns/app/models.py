@@ -1,12 +1,14 @@
 from django.db import models
 from accounts.models import AuthUser
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 class MyText(models.Model):
+    """投稿モデル"""
     class Meta:
         db_table = 'mytext'
-        # verbose_name = "textpoint"
 
     user = models.ForeignKey(AuthUser,on_delete=models.CASCADE)
     text = models.TextField(max_length=255,null=False,blank=False)
@@ -20,6 +22,7 @@ class MyText(models.Model):
     
 
 class Comment(models.Model):
+    """コメントモデル"""
     class Meta:
         db_table = 'comment'
     
@@ -33,6 +36,7 @@ class Comment(models.Model):
         return self.comment_text
 
 class LikeForPost(models.Model):
+    """いいねモデル(投稿)"""
     class Meta:
         db_table = 'like'
 
@@ -44,6 +48,7 @@ class LikeForPost(models.Model):
 
     
 class LikeForComment(models.Model):
+    """いいねモデル(コメント)"""
     class Meta:
         db_table = 'commetforlike'
 
@@ -52,3 +57,15 @@ class LikeForComment(models.Model):
 
     def __str__(self):
         return self.target
+    
+
+class Notice(models.Model):
+    """通知"""
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+    notice_count = models.IntegerField(default=0)
+
+@receiver(post_save, sender=AuthUser)
+def create_profile(sender, **kwargs):
+    """ 新規ユーザー作成時に空の通知モデルを作成する """
+    if kwargs['created']:
+        user_notice = Notice.objects.get_or_create(user=kwargs['instance'])

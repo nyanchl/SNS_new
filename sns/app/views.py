@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.db.models import Count
 from django.forms.models import model_to_dict
 from django.shortcuts import render,redirect,get_object_or_404
@@ -15,7 +16,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm,CommentToCommentCreateForm
-from .models import MyText,Comment,LikeForPost,LikeForComment
+from .models import MyText,Comment,LikeForPost,LikeForComment,Notice
 from accounts.models import AuthUser,Profile,RelateUser
 
 from app.Analysis import analysisoutput
@@ -36,9 +37,11 @@ class BaseView(LoginRequiredMixin,ListView):
         context['like_for_post'] = LikeForPost.objects.all()
         postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
         context['postdata'] = postdata
-
         get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)
-        context['message_count'] = get_mytext_negative.count()
+        Notice.objects.filter(user=self.request.user).update(notice_count=get_mytext_negative.count())
+        notice_count = Notice.objects.filter(user=self.request.user).values('notice_count')
+        print("notice_count",notice_count)
+        context = {'message_count': notice_count}
 
         if LikeForPost.objects.filter(user=self.request.user).exists():
             context['is_user_liked_for_post'] = True
@@ -326,15 +329,21 @@ def UnFollowView(request,*args, **kwargs):
     return HttpResponseRedirect(reverse_lazy('sns:profile', kwargs={'name': follow_target.name}))
 
 
-def Notice(request):
-    """通知機能"""
-    get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5)
-    user_name = request.user
+class Notice_index(TemplateView):
+    template_name = 'notice.html'
+    model = MyText
 
-    context = {'user_name': user_name,
-               'texts': get_mytext_negative}
+    def get(self, request, **kwargs):
+        context = super().get_context_data(**kwargs)
+        get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5)
+        user_name = request.user
 
-    return render(request, 'notice.html', context)
+        context = {'user_name': user_name,
+                   'texts': get_mytext_negative,
+                   'message_count': 0}
+        context.update(context)
+
+        return render(request, 'notice.html', context)
 
 
 class SampleAPIView(APIView):
