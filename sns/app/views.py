@@ -37,11 +37,11 @@ class BaseView(LoginRequiredMixin,ListView):
         context['like_for_post'] = LikeForPost.objects.all()
         postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
         context['postdata'] = postdata
+
         get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)
         Notice.objects.filter(user=self.request.user).update(notice_count=get_mytext_negative.count())
         notice_count = Notice.objects.filter(user=self.request.user).values('notice_count')
-        print("notice_count",notice_count)
-        context = {'message_count': notice_count}
+        context['message_count'] = notice_count.count()
 
         if LikeForPost.objects.filter(user=self.request.user).exists():
             context['is_user_liked_for_post'] = True
