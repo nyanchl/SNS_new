@@ -27,7 +27,7 @@
   <div class="users-postdata">
     {% for post in postdata %}
     
-    <div class="post-{{post.pk}}"> 
+    <div class="post-{{post.pk}}" style="border-bottom: 1px solid #333;"> 
       <h4 class="user">
         <a href="{% url 'profile' post.user.name %}">{{ post.user.username }}</a>
       </h4>
@@ -57,6 +57,9 @@
       <span id="like-for-post-count-{{post.pk}}">{{ post.like }}</span>
     </div>
     {% endfor %}
+    <style type="text/css">
+      .post-{{post.pk}}.border-bottom{border-bottom: 1px solid #333;}
+    </style>  
   </div>
 </body>
 
