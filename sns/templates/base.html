@@ -6,30 +6,31 @@
     <title>SNS</title>
     <h1 class="home">Home</h1>
     <a class="logout" href="{% url 'accounts:logout' %}">ログアウト</a>
+    {% if request.user.is_authenticated %}
+      {% if message_count == 0 %}
+      <a href="{% url 'sns:notice' %}">通知</a>
+      {% else %}
+      <a href="{% url 'sns:notice' %}">通知:{{ message_count }}</a>
+      {% endif %}
+    {% endif %}
   </div>
 </head>
 <body>
-  <a href="{% url 'sns:post' %}"><button class="btn">POST</button>
+  <a href="{% url 'sns:post' %}"><button class="post">POST</button>
     {% for post in posts %}
     <div>
-        {{ post }}
-        <span class="updated_datetime">{{ post.updated_datetime }}</span>
+      {{ post }}
+      <span class="updated_datetime">{{ post.updated_datetime }}</span>
     </div>
     {% endfor %}
   </a>
-  {% if request.user.is_authenticated %}
-    {% if message_count == 0 %}
-    <a href="{% url 'sns:notice' %}">通知</a>
-    {% else %}
-    <a href="{% url 'sns:notice' %}">通知:{{ message_count }}</a>
-    {% endif %}
-  {% endif %}
-  <div id="post" class="post">
+  <div class="users-postdata">
     {% for post in postdata %}
     
-    <div class="alert alert-success" role="alert">
-
-      <a href="{% url 'profile' post.user.name %}">{{ post.user.username }}</a>
+    <div class="post-{{post.pk}}"> 
+      <h4 class="user">
+        <a href="{% url 'profile' post.user.name %}">{{ post.user.username }}</a>
+      </h4>
       <label class="itemlist" for="itemlist">:</label>
       <div class="item">
       {% if post.user.name == request.user.name %}
