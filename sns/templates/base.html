@@ -1,5 +1,13 @@
 {% load static %}
-<h1>Home</h1>
+<link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static '/css/index.css' %}">
+<head>
+  <div class="header">
+    <title>SNS</title>
+    <h1 class="home">Home</h1>
+    <a class="logout" href="{% url 'accounts:logout' %}">ログアウト</a>
+  </div>
+</head>
 <body>
   <a href="{% url 'sns:post' %}"><button class="btn">POST</button>
     {% for post in posts %}
@@ -16,40 +24,39 @@
     <a href="{% url 'sns:notice' %}">通知:{{ message_count }}</a>
     {% endif %}
   {% endif %}
-  <div id="base" class="post">
-    {% for base in postdata %}
+  <div id="post" class="post">
+    {% for post in postdata %}
     
     <div class="alert alert-success" role="alert">
 
-      <a href="{% url 'profile' base.user.name %}">{{ base.user.username }}</a>
-
-      {% if base.user.name == request.user.name %}
-      <div class="text">
-        <form action="{% url 'sns:delete_text' base.pk %}">{% csrf_token %}
-          <button class="btn" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
-        </form>
-        <button><a class="btn" href="{% url 'sns:edit_text' base.pk %}">編集</a></button>
-      </div>
+      <a href="{% url 'profile' post.user.name %}">{{ post.user.username }}</a>
+      <label class="itemlist" for="itemlist">:</label>
+      <div class="item">
+      {% if post.user.name == request.user.name %}
+        <div class="text">
+          <form action="{% url 'sns:delete_text' post.pk %}">{% csrf_token %}
+            <button class="btn" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
+          </form>
+          <button><a class="btn" href="{% url 'sns:edit_text' post.pk %}">編集</a></button>
+        </div>
       {% endif %}
+      </div>
 
-      <a href="{% url 'sns:post_detail' base.pk %}"><p>{{ base.text }}</p></a>
+      <a href="{% url 'sns:post_detail' post.pk %}"><p>{{ post.text }}</p></a>
 
-      {% if base.is_user_liked_for_post %}
-      <button type="button" class="ajax-like-for-post" data-pk="{{ base.pk }}" id="ajax-like-for-post">
-        <i class="fas fa-heart text-danger" id="like-for-post-icon-{{base.pk}}"></i>
+      {% if post.is_user_liked_for_post %}
+      <button type="button" class="ajax-like-for-post" data-pk="{{ post.pk }}" id="ajax-like-for-post">
+        <i class="fas fa-heart text-danger" id="like-for-post-icon-{{post.pk}}"></i>
       </button>
       {% else %}
-      <button type="button" class="ajax-like-for-post" data-pk="{{ base.pk }}" id="ajax-like-for-post">
+      <button type="button" class="ajax-like-for-post" data-pk="{{ post.pk }}" id="ajax-like-for-post">
         <i class="far fa-heart text-danger" id="like-for-post-iconc"></i>
       </button>
       {% endif %}
-      <span id="like-for-post-count-{{base.pk}}">{{ base.like }}</span>
+      <span id="like-for-post-count-{{post.pk}}">{{ post.like }}</span>
     </div>
     {% endfor %}
   </div>
-<h5 class="text-center">
-    <a href="{% url 'accounts:logout' %}" class="font-title">ログアウト</a>
-</h5>
 </body>
 
 <div>

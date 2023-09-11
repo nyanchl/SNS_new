@@ -39,9 +39,9 @@ class BaseView(LoginRequiredMixin,ListView):
         context['postdata'] = postdata
 
         get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)
-        Notice.objects.filter(user=self.request.user).update(notice_count=get_mytext_negative.count())
+        # Notice.objects.filter(user=self.request.user).update(notice_count=get_mytext_negative.count())
         base_notice_count = Notice.objects.get(user=self.request.user)
-        context['message_count'] = base_notice_count.notice_count
+        # context['message_count'] = base_notice_count.notice_count
 
         if LikeForPost.objects.filter(user=self.request.user).exists():
             context['is_user_liked_for_post'] = True
@@ -334,14 +334,15 @@ class Notice_index(TemplateView):
     model = MyText
 
     def get(self, request, **kwargs):
-        context = super().get_context_data(**kwargs)
         get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5)
+        base_notice_count = Notice.objects.filter(user=self.request.user)
         user_name = request.user
 
         context = {'user_name': user_name,
                    'texts': get_mytext_negative,
-                   'message_count': 0}
-        context.update(context)
+                   }
+        # base_notice_count.update(notice_count=0)
+        # print("hogehgeoghghoe",Notice.objects.filter(user=self.request.user),Notice.objects.get(user=self.request.user).notice_count)
 
         return render(request, 'notice.html', context)
 

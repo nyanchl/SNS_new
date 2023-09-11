@@ -62,7 +62,9 @@ class LikeForComment(models.Model):
 class Notice(models.Model):
     """通知"""
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
-    notice_count = models.IntegerField(default=0)
+    # notice_count = models.IntegerField(default=0)
+    text = models.TextField()
+    comment = models.TextField()
 
 @receiver(post_save, sender=AuthUser)
 def create_profile(sender, **kwargs):

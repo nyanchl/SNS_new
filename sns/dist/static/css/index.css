@@ -48,7 +48,7 @@ h1{
 .user{
     margin: 0px;
 }
-/* #itemlist{
+#itemlist{
     display: none;
 }
 .itemlist{
@@ -61,4 +61,4 @@ h1{
 }
 #itemlist:checked+label+.item{
     display: none;
-} */
+}
