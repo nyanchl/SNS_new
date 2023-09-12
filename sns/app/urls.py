@@ -10,6 +10,7 @@ urlpatterns = [
     
     path('',views.BaseView.as_view(),name='base'),
     path('',views.BaseUserView.as_view(),name='base'),
+    # path('',views.Notice_count,name='base'),
     path('post/', views.TextCreateView.as_view(), name='post'),
     path('delete/<int:pk>', views.TextDeleteView, name='delete_text'),
     path('edit/<int:pk>', views.TextEditView.as_view(), name='edit_text'),
@@ -30,5 +31,5 @@ urlpatterns = [
     path('profile/<str:name>/follow', views.FollowView, name='follow'),
     path('profile/<str:name>/unfollow', views.UnFollowView, name='unfollow'),
 
-    path('notice/', views.Notice, name='notice'),
+    path('notice/', views.Notice_index.as_view(), name='notice'),
     ]

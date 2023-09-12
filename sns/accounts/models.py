@@ -168,7 +168,6 @@ class UserActivateTokens(models.Model):
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def publish_activate_token(sender, instance, **kwargs):
     if not instance.is_active:
-        print("hoge")
         user_activate_token = UserActivateTokens.objects.create(
             user=instance,
             expired_at=datetime.now()+timedelta(days=settings.ACTIVATION_EXPIRED_DAYS),
