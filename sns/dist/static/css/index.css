@@ -1,18 +1,27 @@
 .header{
+    margin: 0px;
     display: flex;
     justify-content: space-between;
+}
+.header-element{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 h1{
     margin-bottom:21.44px;
 }
+.notice{
+    display:block;
+    margin: 21.44px 10px 21.44px 10px;
+    color: black;
+    text-align: right;
+}
 .logout{
     display:block;
-    margin-top: 21.44px;
-    margin-bottom:21.44px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 21.44px 10px 21.44px 10px;
     color: black;
+    text-align: right;
 }
 
 .post {
@@ -42,19 +51,25 @@ h1{
 }
 
 .users-postdata{
+    margin: auto;
     padding: 20px;
+    width: 700px;
     height: auto;  
 }
 .user{
     margin: 0px;
+    display: flex;
+    justify-content: space-between;
 }
 #itemlist{
     display: none;
 }
 .itemlist{
+    justify-content: space-between;
     display: inline-block;
     padding: 5px 10px;
     cursor: pointer;
+    text-align: right;
 }
 .item{
     height: 100px;

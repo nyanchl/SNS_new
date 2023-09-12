@@ -5,14 +5,18 @@
   <div class="header">
     <title>SNS</title>
     <h1 class="home">Home</h1>
-    <a class="logout" href="{% url 'accounts:logout' %}">ログアウト</a>
-    {% if request.user.is_authenticated %}
-      {% if message_count == 0 %}
-      <a href="{% url 'sns:notice' %}">通知</a>
-      {% else %}
-      <a href="{% url 'sns:notice' %}">通知:{{ message_count }}</a>
-      {% endif %}
-    {% endif %}
+    <div class="header-element">
+      <div class="notice">
+        {% if request.user.is_authenticated %}
+          {% if message_count == 0 %}
+          <a href="{% url 'sns:notice' %}">通知</a>
+          {% else %}
+          <a href="{% url 'sns:notice' %}">通知:{{ message_count }}</a>
+          {% endif %}
+        {% endif %}
+      </div>
+      <a class="logout" href="{% url 'accounts:logout' %}">ログアウト</a>
+    </div>
   </div>
 </head>
 <body>
@@ -27,11 +31,15 @@
   <div class="users-postdata">
     {% for post in postdata %}
     
-    <div class="post-{{post.pk}}" style="border-bottom: 1px solid #333;"> 
-      <h4 class="user">
-        <a href="{% url 'profile' post.user.name %}">{{ post.user.username }}</a>
-      </h4>
-      <label class="itemlist" for="itemlist">:</label>
+    <div class="post-{{post.pk}}"> 
+      <div class="user-element">
+        <h4 class="user">
+          <a href="{% url 'profile' post.user.name %}">{{ post.user.username }}</a>
+          <div class="ud-item">
+            <label class="itemlist" for="itemlist">:</label>
+          </div>
+        </h4>
+      </div>
       <div class="item">
       {% if post.user.name == request.user.name %}
         <div class="text">
@@ -56,10 +64,8 @@
       {% endif %}
       <span id="like-for-post-count-{{post.pk}}">{{ post.like }}</span>
     </div>
+    <div style="border-bottom: 1px solid #333;"></div>
     {% endfor %}
-    <style type="text/css">
-      .post-{{post.pk}}.border-bottom{border-bottom: 1px solid #333;}
-    </style>  
   </div>
 </body>
 
