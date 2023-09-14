@@ -17,6 +17,7 @@
       </div>
       <a class="logout" href="{% url 'accounts:logout' %}">ログアウト</a>
     </div>
+    <a href="{% url 'sns:config' %}">設定</a>
   </div>
 </head>
 <body>
@@ -75,7 +76,6 @@
   const likePostButtons = document.getElementsByClassName('ajax-like-for-post');
   for (const button of likePostButtons) {
     button.addEventListener('click', e => {
-      console.log("hoge")
       const pk = button.dataset.pk
       e.preventDefault();
       const url = '{% url "sns:like_for_post" %}';

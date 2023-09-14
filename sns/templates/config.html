@@ -1,0 +1,4 @@
+{% load app %}
+<p>{{request.user}}</p>
+<button>ポジティブ{{ True|flag:request.user }}</button>
+<button>off{{ False|flag:request.user }}</button>
