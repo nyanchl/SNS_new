@@ -1,0 +1,7 @@
+<div>
+    <a href="{% url 'sns:base' %}">戻る</a>
+</div>
+<form action="{% url 'sns:negaposi' %}" method="POST">{% csrf_token %}
+    <input type="submit" name="True" value="ボタン1"> 
+    <input type="submit" name="False" value="ボタン2">
+</form>

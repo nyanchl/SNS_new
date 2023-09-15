@@ -66,8 +66,21 @@ class Notice(models.Model):
     text = models.TextField()
     comment = models.TextField()
 
+
+class User_config(models.Model):
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+    config = models.BooleanField(default=False)
+
+
 @receiver(post_save, sender=AuthUser)
 def create_profile(sender, **kwargs):
     """ 新規ユーザー作成時に空の通知モデルを作成する """
     if kwargs['created']:
         user_notice = Notice.objects.get_or_create(user=kwargs['instance'])
+
+
+@receiver(post_save, sender=AuthUser)
+def create_config(sender, **kwargs):
+    """ 新規ユーザー作成時に空の通知モデルを作成する """
+    if kwargs['created']:
+        user_config = User_config.objects.get_or_create(user=kwargs['instance'])

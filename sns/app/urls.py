@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
-from app.views import SampleAPIView
+from . import config
+from app.views import SampleAPIView,TemplateView
 
 
 app_name = 'sns'
@@ -16,6 +17,8 @@ urlpatterns = [
     path('edit/<int:pk>', views.TextEditView.as_view(), name='edit_text'),
 
     path('posi/', views.positivebase, name='posi'),
+    path('config/', TemplateView.as_view(template_name="../templates/config.html"), name='config'),
+    path('config/negaposi',config.get_negaposi_flag, name='negaposi'),
 
     path('detail/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
     path('comment_detail/<int:pk>', views.CommentDetailView.as_view(), name='comment_detail'),

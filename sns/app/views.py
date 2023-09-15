@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .forms import TextForm,ProfileEditForm,CommentCreateForm,TextEditForm,CommentToCommentCreateForm
-from .models import MyText,Comment,LikeForPost,LikeForComment,Notice
+from .models import MyText,Comment,LikeForPost,LikeForComment,Notice,User_config
 from accounts.models import AuthUser,Profile,RelateUser
 
 from app.Analysis import analysisoutput
@@ -33,20 +33,39 @@ class BaseView(LoginRequiredMixin,ListView):
     template_name = 'base.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['like_for_post'] = LikeForPost.objects.all()
-        postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
-        context['postdata'] = postdata
+        user = User_config.objects.get(user=self.request.user)
+        nagaposi_flag = user.config
+        if nagaposi_flag == False:
+            context = super().get_context_data(**kwargs)
+            context['like_for_post'] = LikeForPost.objects.all()
+            postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
+            context['postdata'] = postdata
 
-        get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)
-        # Notice.objects.filter(user=self.request.user).update(notice_count=get_mytext_negative.count())
-        base_notice_count = Notice.objects.get(user=self.request.user)
-        # context['message_count'] = base_notice_count.notice_count
+            get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)
+            # Notice.objects.filter(user=self.request.user).update(notice_count=get_mytext_negative.count())
+            base_notice_count = Notice.objects.get(user=self.request.user)
+            # context['message_count'] = base_notice_count.notice_count
 
-        if LikeForPost.objects.filter(user=self.request.user).exists():
-            context['is_user_liked_for_post'] = True
+            if LikeForPost.objects.filter(user=self.request.user).exists():
+                context['is_user_liked_for_post'] = True
+            else:
+                context['is_user_liked_for_post'] = False
+        
         else:
-            context['is_user_liked_for_post'] = False
+            context = super().get_context_data(**kwargs)
+            context['like_for_post'] = LikeForPost.objects.all()
+            postdata = MyText.objects.filter(textpoint__gte=-0.49).annotate(like=Count("likeforpost",direct=True))
+            context['postdata'] = postdata
+
+            get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)
+            # Notice.objects.filter(user=self.request.user).update(notice_count=get_mytext_negative.count())
+            base_notice_count = Notice.objects.get(user=self.request.user)
+            # context['message_count'] = base_notice_count.notice_count
+
+            if LikeForPost.objects.filter(user=self.request.user).exists():
+                context['is_user_liked_for_post'] = True
+            else:
+                context['is_user_liked_for_post'] = False
 
         return context
     
@@ -345,7 +364,7 @@ class Notice_index(TemplateView):
         # print("hogehgeoghghoe",Notice.objects.filter(user=self.request.user),Notice.objects.get(user=self.request.user).notice_count)
 
         return render(request, 'notice.html', context)
-
+    
 
 class SampleAPIView(APIView):
 
