@@ -364,7 +364,7 @@ class Notice_index(TemplateView):
         # print("hogehgeoghghoe",Notice.objects.filter(user=self.request.user),Notice.objects.get(user=self.request.user).notice_count)
 
         return render(request, 'notice.html', context)
-
+    
 
 class SampleAPIView(APIView):
 
