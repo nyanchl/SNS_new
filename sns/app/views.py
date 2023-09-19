@@ -34,8 +34,8 @@ class BaseView(LoginRequiredMixin,ListView):
 
     def get_context_data(self, **kwargs):
         user = User_config.objects.get(user=self.request.user)
-        nagaposi_flag = user.config
-        if nagaposi_flag == False:
+        negaposi_flag = user.config
+        if negaposi_flag == False:
             context = super().get_context_data(**kwargs)
             context['like_for_post'] = LikeForPost.objects.all()
             postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
@@ -81,10 +81,13 @@ class PostDetailView(generic.DetailView):
     model = MyText
 
     def get_context_data(self,**kwargs):
+        user = User_config.objects.get(user=self.request.user)
+        negaposi_flag = user.config
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentCreateForm
         postdata = self.object.likeforpost_set.count()
         context['postdata'] = postdata
+        context['comments'] = self.object.comment_set.all()
         # ログイン中のユーザーがイイねしているかどうか
         if self.object.likeforpost_set.filter(user=self.request.user).exists():
             context['is_user_liked_for_post'] = True
@@ -92,15 +95,28 @@ class PostDetailView(generic.DetailView):
             context['is_user_liked_for_post'] = False
 
         d = {}
-        for comment in self.object.comment_set.all():
-            like_for_comment_count = comment.likeforcomment_set.count()
-            if comment.likeforcomment_set.filter(user=self.request.user).exists():
-                is_user_liked_for_comment = True
-            else:
-                is_user_liked_for_comment = False
-            d[comment.pk] = {'count':like_for_comment_count,'is_user_liked_for_comment':is_user_liked_for_comment}
+        if negaposi_flag == False:
+            context['comments'] = self.object.comment_set.all()
+            for comment in self.object.comment_set.all():
+                like_for_comment_count = comment.likeforcomment_set.count()
+                if comment.likeforcomment_set.filter(user=self.request.user).exists():
+                    is_user_liked_for_comment = True
+                else:
+                    is_user_liked_for_comment = False
+                d[comment.pk] = {'count':like_for_comment_count,'is_user_liked_for_comment':is_user_liked_for_comment}
 
-            context[f'comment_like_data'] = d
+                context[f'comment_like_data'] = d
+        else:
+            context['comments'] = self.object.comment_set.filter(commentpoint__gte=-0.49)
+            for comment in self.object.comment_set.all():
+                like_for_comment_count = comment.likeforcomment_set.count()
+                if comment.likeforcomment_set.filter(user=self.request.user).exists():
+                    is_user_liked_for_comment = True
+                else:
+                    is_user_liked_for_comment = False
+                d[comment.pk] = {'count':like_for_comment_count,'is_user_liked_for_comment':is_user_liked_for_comment}
+
+                context[f'comment_like_data'] = d
         
         return context
 
@@ -116,15 +132,6 @@ class CommentDetailView(generic.DetailView):
         commentdata = self.object.likeforcomment_set.count()
         context['commentdata'] = commentdata
         return context
-    
-    
-def positivebase(request):
-    """ポジティブ投稿ページ"""
-    querypoint = MyText.objects.filter(textpoint__gte='0.0')
-    context = {
-        'querypoint':querypoint,
-    }
-    return render(request,'positive.html',context)
 
 
 class CommentCreateView(generic.CreateView):

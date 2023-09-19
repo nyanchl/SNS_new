@@ -1,6 +1,15 @@
 {% load app %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static '/css/detail.css' %}">
+<head>
+  <a href="{% url 'sns:base' %}">戻る</a>
+</head>
 <div class="text_detail">
   <div class="indetail">
+    <h4 class="user">
+      <a href="{% url 'profile' mytext.user.name %}">{{ mytext.user.username }}</a>
+    </h4>
     <p>{{ mytext.text }}</p>
     {% if is_user_liked_for_post %}
     <button type="button" class="ajax-like-for-post" id="ajax-like-for-post">
@@ -13,12 +22,26 @@
     {% endif %}
     <span id="like-for-post-count">{{ postdata }}</span>
   </div>
+  <div style="border-bottom: 1px solid #333;"></div>
 </div>
-<div>
+<div class="comment">
+  <form action="{% url 'sns:comment_create' mytext.pk %}" method="post">
+      {% csrf_token %}
+      {{ comment_form }}
+      <div>
+        <button type="submit">送信</button>
+      </div>
+  </form>
+  {% comment %} <div style="border-bottom: 1px solid #333;"></div> {% endcomment %}
+</div>
+<div class="users-comment">
   <h2>コメント</h2>
-  {% for comment in mytext.comment_set.all %}
+  <div style="border-bottom: 1px solid #333;"></div>
+  {% for comment in comments %}
   <div class="comment-text">
-    <a href="{% url 'profile' comment.user.name %}">{{ comment.user.username }}</a>
+    <h4 class="user">
+      <a href="{% url 'profile' comment.user.name %}">{{ comment.user.username }}</a>
+    </h4>
     <p><a href="{% url 'comment_detail' comment.pk %}">{{ comment }}</a><p>
     <div class="comment-like">
       {% with comment_like_data|get_item:comment.pk as dic %}
@@ -35,16 +58,8 @@
       {% endwith %}
     </div>
   </div>
+  <div style="border-bottom: 1px solid #333;"></div>
   {% endfor %}
-</div>
-<div class="comment">
-    <form action="{% url 'sns:comment_create' mytext.pk %}" method="post">
-        {% csrf_token %}
-        {{ comment_form }}
-        <div>
-          <button type="submit">送信</button>
-        </div>
-    </form>
 </div>
 {% block extrajs %}
 <script type="text/javascript">
@@ -119,4 +134,3 @@
   }
 </script>
 {% endblock %}
-<a href="{% url 'sns:base' %}">戻る</a>

@@ -16,7 +16,6 @@ urlpatterns = [
     path('delete/<int:pk>', views.TextDeleteView, name='delete_text'),
     path('edit/<int:pk>', views.TextEditView.as_view(), name='edit_text'),
 
-    path('posi/', views.positivebase, name='posi'),
     path('config/', TemplateView.as_view(template_name="../templates/config.html"), name='config'),
     path('config/negaposi',config.get_negaposi_flag, name='negaposi'),
 

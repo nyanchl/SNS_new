@@ -1,0 +1,15 @@
+.text_detail{
+    margin: auto;
+    padding: 20px;
+    width: 700px;
+    height: auto;  
+}
+.users-comment{
+    margin: auto;
+    padding: 20px;
+    width: 700px;
+    height: auto; 
+}
+.comment{
+    text-align: center;
+}
