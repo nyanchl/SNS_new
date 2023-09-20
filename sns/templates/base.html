@@ -4,7 +4,7 @@
 <head>
   <div class="header">
     <title>SNS</title>
-    <h1 class="home">Home</h1>
+    <h1 class="home"><a href="{% url 'sns:base' %}">Home</a></h1>
     <div class="header-element">
       <div class="notice">
         {% if request.user.is_authenticated %}

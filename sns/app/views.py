@@ -38,7 +38,7 @@ class BaseView(LoginRequiredMixin,ListView):
         if negaposi_flag == False:
             context = super().get_context_data(**kwargs)
             context['like_for_post'] = LikeForPost.objects.all()
-            postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True))
+            postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True)).order_by('created_datetime').reverse()
             context['postdata'] = postdata
 
             get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)

@@ -1,7 +1,10 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static '/css/config.css' %}">
 <div>
     <a href="{% url 'sns:base' %}">戻る</a>
 </div>
-<h1>ポジティブ機能</h1>
+<h3>ポジティブ機能</h3>
 <form action="{% url 'sns:negaposi' %}" method="POST">{% csrf_token %}
     <input type="submit" name="True" value="on"> 
     <input type="submit" name="False" value="off">
