@@ -5,20 +5,6 @@
     <div class="comment-text">
       <a href="{% url 'profile' comment.user.name %}">{{ comment.user.username }}</a>
       <p><a href="{% url 'comment_detail' comment.pk %}">{{ comment }}</a><p>
-      {% comment %} <div class="comment-like">
-        {% with comment_like_data|get_item:comment.pk as dic %}
-        {% if dic.is_user_liked_for_comment %}
-        <button type="button" class="ajax-like-for-comment" data-pk="{{ comment.pk }}" >
-          <div class="fas fa-heart text-danger" id="like-for-comment-icon-{{comment.pk}}"></div>
-        </button>
-        {% else %}
-        <button type="button" class="ajax-like-for-comment" data-pk="{{ comment.pk }}" >
-          <i class="far fa-heart text-danger" id="like-for-comment-icon-{{comment.pk}}"></i>
-        </button>
-        {% endif %}
-        <span id="like-for-comment-count-{{comment.pk}}">{{ dic.count }}</span>
-        {% endwith %}
-      </div> {% endcomment %}
     </div>
     {% endfor %}
   </div>
@@ -32,4 +18,4 @@
       </form>
   </div>
 </div>
-<a href="{% url 'sns:base' %}">戻る</a>
+<a href="{{request.META.HTTP_REFERER}}">戻る</a>
