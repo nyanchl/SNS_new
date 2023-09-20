@@ -1,8 +1,9 @@
 .header{
     margin: 0px;
     display: flex;
-    justify-content: space-between;
+    flex-flow: column;
     border-bottom: 1px solid #333;
+    position: fixed;
 }
 .header-element{
     display: flex;

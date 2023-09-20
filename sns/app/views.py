@@ -54,7 +54,7 @@ class BaseView(LoginRequiredMixin,ListView):
         else:
             context = super().get_context_data(**kwargs)
             context['like_for_post'] = LikeForPost.objects.all()
-            postdata = MyText.objects.filter(textpoint__gte=-0.49).annotate(like=Count("likeforpost",direct=True))
+            postdata = MyText.objects.filter(textpoint__gte=-0.49).annotate(like=Count("likeforpost",direct=True)).order_by('created_datetime').reverse()
             context['postdata'] = postdata
 
             get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)

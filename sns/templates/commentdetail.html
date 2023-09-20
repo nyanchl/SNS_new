@@ -1,21 +1,22 @@
-<div class="comment_detail">
-    <p>{{ comment }}</p>
-    <h2>コメント</h2>
-    {% for comment in comment.comment_set.all %}
-    <div class="comment-text">
-      <a href="{% url 'profile' comment.user.name %}">{{ comment.user.username }}</a>
-      <p><a href="{% url 'comment_detail' comment.pk %}">{{ comment }}</a><p>
-    </div>
-    {% endfor %}
-  </div>
-  <div class="comment">
-      <form action="{% url 'sns:commenttocomment_create' comment.pk %}" method="post">
-          {% csrf_token %}
-          {{ commenttocomment_form }}
-          <div>
-            <button type="submit">送信</button>
-          </div>
-      </form>
-  </div>
-</div>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
 <a href="{{request.META.HTTP_REFERER}}">戻る</a>
+<h4><a href="{% url 'profile' comment.user.name %}">{{ comment.user.username }}</a></h4>
+<p>{{ comment }}</p>
+<div class="comment_detail">
+  <div class="comment">
+    <form action="{% url 'sns:commenttocomment_create' comment.pk %}" method="post">
+        {% csrf_token %}
+        {{ commenttocomment_form }}
+        <div>
+          <button type="submit">送信</button>
+        </div>
+    </form>
+</div>
+<h2>コメント</h2>
+{% for comment in comment.comment_set.all %}
+<div class="comment-text">
+  <h4><a href="{% url 'profile' comment.user.name %}">{{ comment.user.username }}</a></h4>
+  <p><a href="{% url 'comment_detail' comment.pk %}">{{ comment }}</a><p>
+</div>
+{% endfor %}
