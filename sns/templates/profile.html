@@ -1,5 +1,7 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
 {% block content %}
     <div class="profile-username">
         <h1>{{user.username}}</h1>
@@ -28,12 +30,12 @@
     <a href="{% url 'profile' text.user.name %}">{{ text.user.username }}</a>
     <p>{{text}}</p>
     {% if text.is_user_liked_for_post %}
-      <button type="button" class="ajax-like-for-post" data-pk="{{ text.pk }}" id="ajax-like-for-post">
+      <button type="button" class="ajax-like-for-post" data-pk="{{ text.pk }}" id="ajax-like-for-post" style="border:none;background:none">
         <i class="fas fa-heart text-danger" id="like-for-post-icon-{{text.pk}}"></i>
       </button>
       {% else %}
-      <button type="button" class="ajax-like-for-post" data-pk="{{ text.pk }}" id="ajax-like-for-post">
-        <i class="far fa-heart text-danger" id="like-for-post-iconc"></i>
+      <button type="button" class="ajax-like-for-post" data-pk="{{ text.pk }}" id="ajax-like-for-post" style="border:none;background:none">
+        <i class="far fa-heart text-danger" id="like-for-post-icon-{{text.pk}}"></i>
       </button>
       {% endif %}
       <span id="like-for-post-count-{{text.pk}}">{{ text.like }}</span>
