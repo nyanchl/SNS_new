@@ -2,26 +2,27 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static '/css/detail.css' %}">
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+
 <head>
   <a href="{% url 'sns:base' %}">戻る</a>
 </head>
 <div class="text_detail">
-  <div class="indetail">
-    <h4 class="user">
-      <a href="{% url 'profile' mytext.user.name %}">{{ mytext.user.username }}</a>
-    </h4>
-    <p>{{ mytext.text }}</p>
-    {% if is_user_liked_for_post %}
-    <button type="button" class="ajax-like-for-post" id="ajax-like-for-post">
-      <i class="fas fa-heart text-danger" id="like-for-post-icon"></i>
-    </button>
-    {% else %}
-    <button type="button" class="ajax-like-for-post" id="ajax-like-for-post">
-      <i class="far fa-heart text-danger" id="like-for-post-icon"></i>
-    </button>
-    {% endif %}
-    <span id="like-for-post-count">{{ postdata }}</span>
-  </div>
+  <h4 class="user">
+    <a href="{% url 'profile' mytext.user.name %}">{{ mytext.user.username }}</a>
+  </h4>
+  <p>{{ mytext.text }}</p>
+  {% if is_user_liked_for_post %}
+  <button type="button" class="ajax-like-for-post" id="ajax-like-for-post" style="border:none;background:none">
+    <i class="fas fa-heart text-danger" id="like-for-post-icon"></i>
+  </button>
+  {% else %}
+  <button type="button" class="ajax-like-for-post" id="ajax-like-for-post" style="border:none;background:none">
+    <i class="far fa-heart text-danger" id="like-for-post-icon"></i>
+  </button>
+  {% endif %}
+  <span id="like-for-post-count">{{ postdata }}</span>
   <div style="border-bottom: 1px solid #333;"></div>
 </div>
 <div class="comment">
@@ -32,7 +33,6 @@
         <button type="submit">送信</button>
       </div>
   </form>
-  {% comment %} <div style="border-bottom: 1px solid #333;"></div> {% endcomment %}
 </div>
 <div class="users-comment">
   <h2>コメント</h2>
@@ -46,11 +46,11 @@
     <div class="comment-like">
       {% with comment_like_data|get_item:comment.pk as dic %}
       {% if dic.is_user_liked_for_comment %}
-      <button type="button" class="ajax-like-for-comment" data-pk="{{ comment.pk }}" >
-        <div class="fas fa-heart text-danger" id="like-for-comment-icon-{{comment.pk}}"></div>
+      <button type="button" class="ajax-like-for-comment" data-pk="{{ comment.pk }}" style="border:none;background:none">
+        <i class="fas fa-heart text-danger" id="like-for-comment-icon-{{comment.pk}}"></i>
       </button>
       {% else %}
-      <button type="button" class="ajax-like-for-comment" data-pk="{{ comment.pk }}" >
+      <button type="button" class="ajax-like-for-comment" data-pk="{{ comment.pk }}" style="border:none;background:none">
         <i class="far fa-heart text-danger" id="like-for-comment-icon-{{comment.pk}}"></i>
       </button>
       {% endif %}
@@ -66,7 +66,6 @@
   const likePostButtons = document.getElementsByClassName('ajax-like-for-post');
   for (const button of likePostButtons) {
     button.addEventListener('click', e => {
-      console.log("hoge")
       const pk = button.dataset.pk
       e.preventDefault();
       const url = '{% url "sns:like_for_post" %}';
@@ -87,11 +86,11 @@
         if (response.method == 'create') {
           icon.classList.remove('far')
           icon.classList.add('fas')
-          icon.id = `like-for-post-icon-${pk}`
+          icon.id = `like-for-post-icon`
         } else {
           icon.classList.remove('fas')
           icon.classList.add('far')
-          icon.id = `like-for-post-icon-${pk}`
+          icon.id = `like-for-post-icon`
         }
       }).catch(error => {
         console.log(error);

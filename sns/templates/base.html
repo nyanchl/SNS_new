@@ -1,6 +1,10 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static '/css/index.css' %}">
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+
+{% block extrahead %}{% endblock %}
 <head>
   <div class="header">
     <title>SNS</title>
@@ -55,12 +59,12 @@
       <a href="{% url 'sns:post_detail' post.pk %}"><p>{{ post.text }}</p></a>
 
       {% if post.is_user_liked_for_post %}
-      <button type="button" class="ajax-like-for-post" data-pk="{{ post.pk }}" id="ajax-like-for-post">
+      <button type="button" class="ajax-like-for-post" data-pk="{{ post.pk }}"  style="border:none;background:none">
         <i class="fas fa-heart text-danger" id="like-for-post-icon-{{post.pk}}"></i>
       </button>
       {% else %}
-      <button type="button" class="ajax-like-for-post" data-pk="{{ post.pk }}" id="ajax-like-for-post">
-        <i class="far fa-heart text-danger" id="like-for-post-iconc"></i>
+      <button type="button" class="ajax-like-for-post" data-pk="{{ post.pk }}" style="border:none;background:none">
+        <i class="far fa-heart text-danger" id="like-for-post-icon-{{post.pk}}"></i>
       </button>
       {% endif %}
       <span id="like-for-post-count-{{post.pk}}">{{ post.like }}</span>
