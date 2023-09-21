@@ -11,7 +11,6 @@ urlpatterns = [
     
     path('',views.BaseView.as_view(),name='base'),
     path('',views.BaseUserView.as_view(),name='base'),
-    # path('',views.Notice_count,name='base'),
     path('post/', views.TextCreateView.as_view(), name='post'),
     path('delete/<int:pk>', views.TextDeleteView, name='delete_text'),
     path('edit/<int:pk>', views.TextEditView.as_view(), name='edit_text'),
