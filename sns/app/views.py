@@ -357,15 +357,14 @@ class Notice_index(TemplateView):
     model = MyText
 
     def get(self, request, **kwargs):
-        get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5)
-        base_notice_count = Notice.objects.filter(user=self.request.user)
+        get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.49)
+        get_comment_negative = Comment.objects.filter(commentpoint__lte= -0.49)
         user_name = request.user
 
         context = {'user_name': user_name,
                    'texts': get_mytext_negative,
+                   'comments': get_comment_negative
                    }
-        # base_notice_count.update(notice_count=0)
-        # print("hogehgeoghghoe",Notice.objects.filter(user=self.request.user),Notice.objects.get(user=self.request.user).notice_count)
 
         return render(request, 'notice.html', context)
     

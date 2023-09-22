@@ -1,8 +1,11 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
+<a href="{% url 'sns:base' %}">戻る</a>
 {% if request.user.is_authenticated %}
     <div class="message-alert">
         {% for text in texts %}
             {% if text.user == user_name %}
-            <h4>{{ text.user }}</h4>
+            <h4><a href="{% url 'profile' text.user.name %}">{{ text.user.username }}</a></h4>
             <p>注意:この投稿に不適切な内容が含まれているので編集か削除することをおすすめします</p>
             <a href="{% url 'sns:post_detail' text.pk %}"><p>{{ text }}</p></a>
             <div class="text">
@@ -13,6 +16,18 @@
             </div>
             {% endif %}
         {% endfor %}
+        {% for comment in comments %}
+            {% if comment.user == user_name %}
+            <h4><a href="{% url 'profile' comment.user.name %}">{{ comment.user }}</a></h4>
+            <p>注意:このコメントに不適切な内容が含まれているので編集か削除することをおすすめします</p>
+            <a href="{% url 'sns:comment_detail' comment.pk %}"><p>{{ comment }}</p></a>
+            <div class="comment">
+                <form action="{% url 'sns:delete_text' comment.pk %}">{% csrf_token %}
+                <button class="btn" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
+                </form>
+                <button><a class="btn" href="{% url 'sns:edit_text' comment.pk %}">編集</a></button>
+            </div>
+            {% endif %}
+        {% endfor %}
     </div>
 {% endif %}
-<a href="{% url 'sns:base' %}">戻る</a>
