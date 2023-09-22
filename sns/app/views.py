@@ -34,18 +34,20 @@ class BaseView(LoginRequiredMixin,ListView):
 
     def get_context_data(self, **kwargs):
         user = User_config.objects.get(user=self.request.user)
+        notice_user = Notice.objects.filter(user=self.request.user)
+
+        #通知機能
+        negatext = MyText.objects.filter(user=self.request.user, textpoint__lte=-0.49).count()
+        negacomment = Comment.objects.filter(user=self.request.user, commentpoint__lte=-0.49).count()
+        notice_user.update(text=negatext,comment=negacomment)
+
         negaposi_flag = user.config
         if negaposi_flag == False:
             context = super().get_context_data(**kwargs)
             context['like_for_post'] = LikeForPost.objects.all()
             postdata = MyText.objects.all().annotate(like=Count("likeforpost",direct=True)).order_by('created_datetime').reverse()
             context['postdata'] = postdata
-
-            get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)
-            # Notice.objects.filter(user=self.request.user).update(notice_count=get_mytext_negative.count())
-            base_notice_count = Notice.objects.get(user=self.request.user)
-            # context['message_count'] = base_notice_count.notice_count
-
+            context['notice_count'] = negatext + negacomment
             if LikeForPost.objects.filter(user=self.request.user).exists():
                 context['is_user_liked_for_post'] = True
             else:
@@ -56,12 +58,7 @@ class BaseView(LoginRequiredMixin,ListView):
             context['like_for_post'] = LikeForPost.objects.all()
             postdata = MyText.objects.filter(textpoint__gte=-0.49).annotate(like=Count("likeforpost",direct=True)).order_by('created_datetime').reverse()
             context['postdata'] = postdata
-
-            get_mytext_negative = MyText.objects.filter(textpoint__lte= -0.5, user=self.request.user)
-            # Notice.objects.filter(user=self.request.user).update(notice_count=get_mytext_negative.count())
-            base_notice_count = Notice.objects.get(user=self.request.user)
-            # context['message_count'] = base_notice_count.notice_count
-
+            context['notice_count'] = negatext + negacomment
             if LikeForPost.objects.filter(user=self.request.user).exists():
                 context['is_user_liked_for_post'] = True
             else:

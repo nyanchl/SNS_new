@@ -62,9 +62,8 @@ class LikeForComment(models.Model):
 class Notice(models.Model):
     """通知"""
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
-    # notice_count = models.IntegerField(default=0)
-    text = models.TextField()
-    comment = models.TextField()
+    text = models.IntegerField("投稿通知数", default=0)
+    comment = models.IntegerField("コメント通知数", default=0)
 
 
 class User_config(models.Model):

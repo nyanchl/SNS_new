@@ -47,7 +47,7 @@
   {% endfor %}
   <h3>いいね</h3>
   {% for like in mylike %}
-  <a>{{ like.target.user.username }}</a>
+  <h4><a>{{ like.target.user.username }}</a></h4>
   <a href="{% url 'sns:post_detail' like.target.pk %}"><p>{{ like.target }}</p>
   {% endfor %}
 </div>
