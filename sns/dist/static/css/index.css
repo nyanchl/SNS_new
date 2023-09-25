@@ -19,6 +19,12 @@ h1{
     color: black;
     text-align: right;
 }
+.user-config{
+    display:block;
+    margin: 21.44px 10px 21.44px 10px;
+    color: black;
+    text-align: right;
+}
 .logout{
     display:block;
     margin: 21.44px 10px 21.44px 10px;
