@@ -57,26 +57,26 @@
       </div>
 
       <a href="{% url 'sns:post_detail' post.pk %}"><p>{{ post.text }}</p></a>
-
-      {% if post.is_user_liked_for_post %}
-      <button type="button" class="ajax-like-for-post" data-pk="{{ post.pk }}"  style="border:none;background:none">
-        <i class="fas fa-heart text-danger" id="like-for-post-icon-{{post.pk}}"></i>
-      </button>
-      {% else %}
-      <button type="button" class="ajax-like-for-post" data-pk="{{ post.pk }}" style="border:none;background:none">
-        <i class="far fa-heart text-danger" id="like-for-post-icon-{{post.pk}}"></i>
-      </button>
-      {% endif %}
-      <span id="like-for-post-count-{{post.pk}}">{{ post.like }}</span>
+      <div>  
+        {% if post.is_user_liked_for_post %}
+        <button type="button" class="ajax-like-for-post" data-pk="{{ post.pk }}"  style="border:none;background:none">
+          <i class="fas fa-heart text-danger" id="like-for-post-icon-{{post.pk}}"></i>
+        </button>
+        {% else %}
+        <button type="button" class="ajax-like-for-post" data-pk="{{ post.pk }}" style="border:none;background:none">
+          <i class="far fa-heart text-danger" id="like-for-post-icon-{{post.pk}}"></i>
+        </button>
+        {% endif %}
+        <span id="like-for-post-count-{{post.pk}}">{{ post.like }}</span>
+      </div>
     </div>
     <div style="border-bottom: 1px solid #333;"></div>
     {% endfor %}
   </div>
 </body>
 
-<div>
-  {% block extrajs %}
-  <script type="text/javascript">
+{% block extrajs %}
+<script type="text/javascript">
   const likePostButtons = document.getElementsByClassName('ajax-like-for-post');
   for (const button of likePostButtons) {
     button.addEventListener('click', e => {
@@ -96,7 +96,6 @@
         const counter = document.getElementById(`like-for-post-count-${pk}`)
         const icon = document.getElementById(`like-for-post-icon-${pk}`)
         counter.textContent = response.postdata
-        console.log(response)
         if (response.method == 'create') {
           icon.classList.remove('far')
           icon.classList.add('fas')
@@ -111,6 +110,5 @@
       });
     });
   }
-  </script>
-  {% endblock %}
-</div>
+</script>
+{% endblock %}

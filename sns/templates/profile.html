@@ -3,10 +3,29 @@
 <link rel="stylesheet" type="text/css" href="{% static '/css/profile.css' %}">
 <!-- Font Awesome -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-<div>
-  <a href="{{request.META.HTTP_REFERER}}">戻る</a>
-</div>
+<head>
+  <div class="header">
+    <title>SNS</title>
+    <h1 class="home"><a href="{% url 'sns:base' %}">Home</a></h1>
+    <div class="header-element">
+      <div class="content">
+        {% if request.user.is_authenticated %}
+          {% if notice_count == 0 %}
+          <a class="notice" href="{% url 'sns:notice' %}">通知</a>
+          {% else %}
+          <a class="notice" href="{% url 'sns:notice' %}">通知:{{ notice_count }}</a>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="content"><a class="user-config" href="{% url 'sns:config' %}">設定</a></div>
+      <div class="content"><a class="logout" href="{% url 'accounts:logout' %}">ログアウト</a></div>
+    </div>
+  </div>
+</head>
 <div class="profile-username">
+  <h5>
+    <a href="{{request.META.HTTP_REFERER}}">戻る</a>
+  </h5>
   <h1>{{user.username}}</h1>
   <div class="profile-name">
     <p>@{{user.name}}</p>
@@ -46,9 +65,13 @@
   <div style="border-bottom: 1px solid #333;"></div>
   {% endfor %}
   <h3>いいね</h3>
-  {% for like in mylike %}
-  <h4><a>{{ like.target.user.username }}</a></h4>
-  <a href="{% url 'sns:post_detail' like.target.pk %}"><p>{{ like.target }}</p>
+  {% for post_like in mylike %}
+  <h4><a href="{% url 'profile' post_like.target.user.name %}">{{ post_like.target.user.username }}</a></h4>
+  <a href="{% url 'sns:post_detail' post_like.target.pk %}"><p>{{ post_like.target }}</p>
+  {% endfor %}
+  {% for comment_like in commentmylike %}
+  <h4><a href="{% url 'profile' comment_like.target.user.name %}">{{ comment_like.target.user.username }}</a></h4>
+  <a href="{% url 'sns:comment_detail' comment_like.target.pk %}"><p>{{ comment_like.target }}</p>
   {% endfor %}
 </div>
 <div>

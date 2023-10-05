@@ -6,9 +6,26 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
 
 <head>
-  <a href="{% url 'sns:base' %}">戻る</a>
+  <div class="header">
+    <title>SNS</title>
+    <h1 class="home"><a href="{% url 'sns:base' %}">Home</a></h1>
+    <div class="header-element">
+      <div class="content">
+        {% if request.user.is_authenticated %}
+          {% if notice_count == 0 %}
+          <a class="notice" href="{% url 'sns:notice' %}">通知</a>
+          {% else %}
+          <a class="notice" href="{% url 'sns:notice' %}">通知:{{ notice_count }}</a>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="content"><a class="user-config" href="{% url 'sns:config' %}">設定</a></div>
+      <div class="content"><a class="logout" href="{% url 'accounts:logout' %}">ログアウト</a></div>
+    </div>
+  </div>
 </head>
 <div class="text_detail">
+  <h5><a href="{% url 'sns:base' %}">戻る</a></h5>
   <h4 class="user">
     <a href="{% url 'profile' mytext.user.name %}">{{ mytext.user.username }}</a>
   </h4>

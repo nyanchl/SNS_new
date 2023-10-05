@@ -274,6 +274,7 @@ def ProfileView(request,name):
     likeforpost = LikeForPost.objects.all()
     postdata = MyText.objects.filter(user=user).annotate(like=Count("likeforpost",direct=True))
     mylike = LikeForPost.objects.filter(user_id=user)
+    commentmylike = LikeForComment.objects.filter(user_id=user)
     
     context = {
         'user':user,
@@ -284,6 +285,7 @@ def ProfileView(request,name):
         'postdata':postdata,
         'likeforpost':likeforpost,
         'mylike':mylike,
+        'commentmylike':commentmylike,
 	}
 
     result = RelateUser.objects.filter(owner=request.user.name).filter(follow_target=context['user'].name).count()

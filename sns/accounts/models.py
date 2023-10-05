@@ -148,7 +148,7 @@ class UserActivateTokensManager(models.Manager):
     def activate_user_by_token(self, activate_token):
         user_activate_token = self.filter(
             activate_token=activate_token,
-            expired_at__gte=datetime.now() # __gte = greater than equal
+            expired_at__gte=datetime.now()
         ).first()
         if hasattr(user_activate_token, 'user'):
             user = user_activate_token.user
@@ -178,7 +178,6 @@ def publish_activate_token(sender, instance, **kwargs):
         subject = 'Activated! Your Account!'
         message = 'ユーザーが使用できるようになりました'
     from_email = settings.DEFAULT_FROM_EMAIL
-    print(from_email)
     recipient_list = [
         instance.email,
     ]

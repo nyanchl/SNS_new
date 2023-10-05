@@ -1,3 +1,37 @@
+.header{
+    margin: 0px;
+    display: flex;
+    flex-flow: column;
+    border-bottom: 1px solid #333;
+    position: fixed;
+}
+.header-element{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+h1{
+    margin-bottom:21.44px;
+}
+.notice{
+    display:block;
+    margin: 21.44px 10px 21.44px 10px;
+    color: black;
+    text-align: right;
+}
+.user-config{
+    display:block;
+    margin: 21.44px 10px 21.44px 10px;
+    color: black;
+    text-align: right;
+}
+.logout{
+    display:block;
+    margin: 21.44px 10px 21.44px 10px;
+    color: black;
+    text-align: right;
+}
+
 .text_detail{
     margin: auto;
     padding: 20px;

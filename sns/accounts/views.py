@@ -27,7 +27,6 @@ def signup(request):
     return render(request, 'signup.html',{'form':form})
 
 def activate_user(request, activate_token):
-    print("hoge")
     activated_user = UserActivateTokens.objects.activate_user_by_token(
         activate_token)
     if hasattr(activated_user, 'is_active'):

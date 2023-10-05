@@ -1,6 +1,6 @@
 from curses.ascii import US
 from django.contrib import admin
-from .models import AuthUserManager,AuthUser,Profile,RelateUser
+from .models import AuthUserManager,AuthUser,Profile,RelateUser,UserActivateTokens
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
@@ -14,3 +14,4 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(AuthUser,UserAdmin)
 admin.site.register(RelateUser)
 admin.site.register(Profile)
+admin.site.register(UserActivateTokens)
